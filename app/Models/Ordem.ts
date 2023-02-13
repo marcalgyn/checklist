@@ -6,25 +6,25 @@ export default class Ordem extends BaseModel {
   public id: number
 
   @column()
-  public emp_origem: string
+  public empOrigem: string
 
   @column()
-  public usu_origem: string
+  public usuOrigem: string
 
   @column()
-  public emp_destino: string
+  public empDestino: string
 
   @column()
-  public usu_destino: string
+  public usuDestino: string
 
   @column()
-  public data_origem: DateTime
+  public dataOrigem: DateTime
 
   @column()
-  public data_previsao: DateTime
-  
+  public dataPrevisao: DateTime
+
   @column()
-  public data_conclusao: DateTime
+  public dataConclusao: DateTime
 
   @column()
   public descricaoProblema: string
@@ -36,10 +36,10 @@ export default class Ordem extends BaseModel {
   public estatus: string
 
   @column()
-  public url_origem: string
+  public urlOrigem: string
 
   @column()
-  public url_final: string
+  public urlFinal: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt?: DateTime

@@ -7,6 +7,7 @@
       <h2 class="title has-text-centered">Registrar</h2>
       <form action="/register" method="post">
         {{ csrfField() }}
+        <input type="hidden" name="ativo" id="ativo" value="N" >
 
         <div class="field">
           <label class="label">Nome</label>
@@ -18,7 +19,6 @@
               value="{{ flashMessages.get('name') || '' }}"
               >
           </div>
-          <input name="ativo" id="ativo" value={{'N'}} >
 
           @if(flashMessages.has('errors.name'))
             <p class="help is-danger">
@@ -79,7 +79,7 @@
           @endif
         </div>
 
-        
+
 
         <div class="control">
           <button type="submit" class="button is-link is-fullwidth">Registrar</button>

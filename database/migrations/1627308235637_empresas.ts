@@ -7,7 +7,7 @@ export default class Empresas extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.string('cnpj').unique().notNullable()
-      table.string('razaoSocial').notNullable()
+      table.string('razao_social').notNullable()
       table.string('email').notNullable()
       table.timestamp('created_at', { useTz: true })
     })
@@ -16,5 +16,5 @@ export default class Empresas extends BaseSchema {
   public async down() {
     this.schema.dropTable(this.tableName)
   }
-  
+
 }

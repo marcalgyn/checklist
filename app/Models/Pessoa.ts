@@ -18,10 +18,10 @@ export default class Pessoa extends BaseModel {
   public telefone: string
 
   @column()
-  public cargo: string
+  public cargo: number
 
   @column()
-  public ativo: string
+  public ativo: boolean
 
 
   @column({ serializeAs: null })

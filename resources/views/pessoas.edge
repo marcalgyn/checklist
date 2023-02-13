@@ -2,122 +2,112 @@
 
 @section('content')
   <div class="columns">
-    <div class="column is-full">
+    <div class="column is-fullwidth">
       <div class="box">
         <form action="/pessoas" method="post">
           {{ csrfField() }}
           <input type="hidden" name="id" id="id" value={{ objPessoa.id }}>
 
-          <div class="card has-background-light">
+          <div class="card">
             <header class="card-header has-background-link">
               <p class="title is-4 p-3 has-text-white">
                 Cadastro de Pessoa
               </p>
             </header>
             <div class="card-content">
-              <div class="field-body">
-                  <div class="column">
-                    <div class="field">
-                      <label class="label"> Nome</label>
-                      <div class="control is-expanded">
-                      <input
-                        id="name"
-                        type="text"
-                        name="name"
-                        class="input"
-                        placeholder="Nome da Pessoa"
-                        value="{{ objPessoa.name }}"
-                        required>
-                      </div>
-                    </div> 
-                                 
-                    <div class="field">
-                        <label class="label">E-mail</label>
-                      <div class="control is-expanded">
-                          <input
-                            id="email"
-                            type="email"
-                            name="email"
-                            class="input"
-                            placeholder="e-mail"
-                            value="{{objPessoa.email}}"
-                                >
-                      </div>
-                    </div>
-
-                    <div class="field">
-                      <label class="label">Telefone</label>
-                      <div class="control">
-                        <input
-                          id="telefone"
-                          type="text"
-                          name="telefone"
-                          class="input"
-                          placeholder="Telefone"
-                          value="{{objPessoa.telefone}}"
-                        >
-                      </div>
-                    </div>
-
-                    <div class="field">
-                        <label class="label">Senha</label>
-                        <div class="control">
-                          <input
-                            id="pasword"
-                            type="password"
-                            class="input {{ flashMessages.get('errors.password') ? 'is-danger' : '' }}"
-                            name="password"
-                            value={{objPessoa.password}}
-                            >
-                        </div>
-
-                        @if(flashMessages.has('errors.password'))
-                          <p class="help is-danger">
-                            {{ flashMessages.get('errors.password') }}
-                          </p>
-                        @endif
-                    </div>
-
-                      <div class="field">
-                        <label class="label">Confirma a Senha</label>
-                        <div class="control">
-                          <input
-                            id="password_confirmation"
-                            type="password"
-                            class="input {{ flashMessages.get('errors.password_confirmation') ? 'is-danger' : '' }}"
-                            name="password_confirmation"
-                            >
-                        </div>
-                          @if(flashMessages.has('errors.password_confirmation'))
-                              <p class="help is-danger">
-                                {{ flashMessages.get('errors.password_confirmation') }}
-                              </p>
-                          @endif
-                      </div>
-                 
-                    <div class="field">
-                      <div class="field">
-                        <label class="label">Cargo</label>
-                        <div class="control is-expanded">
-                          <select class="form-control" id="ativo" name="ativo">
-                                <option value="0"> Diretor </option>
-                                <option value="1"> Gerente </option>
-                                <option value="2"> Encarregado </option>
-                          </select>
-                        </div>
-                      </div>
-                      
-                      <br>
-
-                      <div class="field">
-                          <div class="control">
-                              Ativo?: <input type="checkbox" id="ativo" name="ativo" value="{{objPessoa.ativo}}" onclick="myFunction()" >
-                          </div>
-                      </div>
-                    </div>
-                  </div>
+              <div class="field">
+                <label class="label"> Nome</label>
+                <div class="control is-expanded">
+                  <input
+                    id="name"
+                    type="text"
+                    name="name"
+                    class="input"
+                    placeholder="Nome da Pessoa"
+                    value="{{ objPessoa.name }}"
+                    required>
+                </div>
               </div>
+              <div class="field">
+                <label class="label">E-mail</label>
+                <div class="control is-expanded">
+                  <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    class="input"
+                    placeholder="e-mail"
+                    value="{{objPessoa.email}}">
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Telefone</label>
+                <div class="control">
+                  <input
+                    id="telefone"
+                    type="text"
+                    name="telefone"
+                    class="input"
+                    placeholder="(99) 99999-9999"
+                    value="{{objPessoa.telefone}}">
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Senha</label>
+                <div class="control">
+                  <input
+                    id="password"
+                    type="password"
+                    class="input {{ flashMessages.get('errors.password') ? 'is-danger' : '' }}"
+                    name="password"
+                    value={{objPessoa.password}}>
+                </div>
 
+                @if(flashMessages.has('errors.password'))
+                  <p class="help is-danger">
+                    {{ flashMessages.get('errors.password') }}
+                  </p>
+                @endif
+              </div>
+              <div class="field">
+                <label class="label">Confirma a Senha</label>
+                <div class="control">
+                  <input
+                    id="password_confirmation"
+                    type="password"
+                    class="input {{ flashMessages.get('errors.password_confirmation') ? 'is-danger' : '' }}"
+                    name="password_confirmation"
+                    >
+                </div>
+                  @if(flashMessages.has('errors.password_confirmation'))
+                      <p class="help is-danger">
+                        {{ flashMessages.get('errors.password_confirmation') }}
+                      </p>
+                  @endif
+              </div>
+              <div class="field-body">
+                <div class="field is-horizontal">
+                  <label class="label" style="margin-right: 5px;">Cargo: </label>
+                  <div class="select is-expanded">
+                    {{objPessoa.cargo}}
+                    <select id="cargo" name="cargo" required>
+                      <option value="0" @if(objPessoa.cargo === 0) selected @end >Selecione um Cargo</option>
+                      <option value="1" @if(objPessoa.cargo === 1) selected @end > Diretor </option>
+                      <option value="2" @if(objPessoa.cargo === 2) selected @end > Gerente </option>
+                      <option value="3" @if(objPessoa.cargo === 3) selected @end > Encarregado </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="checkbox">
+                    @if(objPessoa.ativo)
+                      <input type="checkbox" id="ativo" name="ativo" value="true" checked><strong> Ativo? </strong>
+                    @else
+                      <input type="checkbox" id="ativo" name="ativo" value="false"><strong> Ativo? </strong>
+                    @end
+                  </label>
+                </div>
+              </div>
               <hr>
               <div class="field is-grouped">
                 <div class="control">
@@ -128,19 +118,15 @@
                     <span>Salvar</span>
                   </button>
                 </div>
-
-
                 <div class="control">
-                  <button type="reset" class="button is-warning">
+                  <button type="button" class="button is-warning" onclick="window.location.href='{{ `/pessoas` }}'">
                     Cancelar
                   </button>
                 </div>
               </div>
-              <hr>
             </div>
           </div>
         </form>
-
 
         @if(flashMessages.has('notification'))
           <div class="notification is-success is-light">
@@ -153,76 +139,44 @@
           <table class="table is-fullwidth is-striped is-hoverable">
             <thead>
               <tr>
-                <th>
-                  ID
-                </th>
-                <th>
-                  Nome
-                </th>
-                <th  class="has-text-centered">
-                 Telefone
-                </th>
-                <th class="has-text-centered">
-                 Cargo
-                </th>
-                
-                <th class="has-text-centered">
-                 Ativo
-                </th>
-
-                <th class="has-text-centered">
-                  Ações
-                </th>
-
+                <th>ID</th>
+                <th>Nome</th>
+                <th class="has-text-centered">Telefone</th>
+                <th class="has-text-centered">Cargo</th>
+                <th class="has-text-centered">Ativo</th>
+                <th class="has-text-centered">Ações</th>
               </tr>
             </thead>
             <tbody>
               @each(pessoa in pessoas)
-              <tr>
-                <td>
-                    {{ pessoa.id }}
-                </td>
-                <td>
-                    {{ pessoa.name }}
-                </td>
-                <td  class="has-text-centered">
-                    {{ pessoa.telefone }}
-                </td>
-                <td class="has-text-centered">
-                    {{ pessoa.cargo }}
-                </td>
-
-                <td class="has-text-centered">
-                    {{ pessoa.ativo }}
-                </td>
-            
-                <td class="has-text-centered">
-                  <form action="{{ `/pessoas/${pessoa.id}?_method=DELETE` }}" method="post">
-                    {{ csrfField() }}
-                    
-                    <button
-                    type="button"
-                    class="button is-small is-primary"
-                    onclick="window.location.href='{{ `/pessoas/${pessoa.id}` }}'"
-                    >
-                    <span class="icon is-small">
-                      <i class="fas fa-edit"></i>
-                    </span>
-                      <span>Editar</span>
-                    </button
-                    
-                    
-                    <button type="submit" class="button is-small is-danger">
-                    <span class="icon is-small">
-                      <i class="fas fa-trash"></i>
-                    </span>
-                    <span>Excluir</span>
-                    </button>
-                  </form>
-
-
-                </td>
-              </tr>
+                <tr>
+                  <td>{{ pessoa.id }}</td>
+                  <td>{{ pessoa.name }}</td>
+                  <td class="has-text-centered">{{ pessoa.telefone }}</td>
+                  <td class="has-text-centered">{{ pessoa.cargo === 1 ? 'Diretor' : pessoa.cargo === 2 ? 'Gerente' : 'Encarregado'}}</td>
+                  <td class="has-text-centered">{{ pessoa.ativo === 0 ? 'Ativo' : 'Não'}}</td>
+                  <td class="has-text-centered">
+                    <form action="{{ `/pessoas/${pessoa.id}?_method=DELETE` }}" method="post">
+                      {{ csrfField() }}
+                      <button
+                        type="button"
+                        class="button is-small is-primary"
+                        onclick="window.location.href='{{ `/pessoas/${pessoa.id}` }}'"
+                      >
+                        <span class="icon is-small">
+                          <i class="fas fa-edit"></i>
+                        </span>
+                          <span>Editar</span>
+                      </button>
+                      <button type="submit" class="button is-small is-danger">
+                        <span class="icon is-small">
+                          <i class="fas fa-trash"></i>
+                        </span>
+                        <span>Excluir</span>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
               @else
                 <tr>
                   <td colspan="5" class="has-text-centered">Nenhum Registro Encontrado com os Dados Informados</td>
@@ -259,7 +213,7 @@
   </div>
 
 
-  
+
 
 @endsection
 

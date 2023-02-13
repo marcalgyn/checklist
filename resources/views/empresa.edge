@@ -22,7 +22,7 @@
                     id="cnpj"
                     type="text"
                     name="cnpj"
-                    class="input {{ flashMessages.has('errors.cnpj') ? 'is-danger' : '' }}" placeholder="Informe o CNPJ Empresa"
+                    class="input {{ flashMessages.has('errors.cnpj') ? 'is-danger' : '' }}" placeholder="Informe o CNPJ da Empresa"
                     value="{{ objEmpresa.cnpj }}"
                   >
                 </div>
@@ -32,22 +32,21 @@
                 <label class="label">Razão Social</label>
                 <div class="control is-expanded">
                   <input
-                    id="razaosocial"
                     type="text"
-                    name="razaosocial"
-                    class="input {{ flashMessages.has('errors.razaosocial') ? 'is-danger' : '' }}"
+                    name="razaoSocial"
+                    class="input {{ flashMessages.has('errors.razaoSocial') ? 'is-danger' : '' }}"
                     placeholder="Informe a Razão Social da Empresa"
-                    value="{{ objEmpresa.razaosocial }}"
+                    value="{{ objEmpresa.razaoSocial }}"
                   >
                 </div>
               </div>
-              
+
               <div class="field">
                 <label class="label">E-mail</label>
                 <div class="control is-expanded">
                   <input
                     id="email"
-                    type="text"
+                    type="email"
                     name="email"
                     class="input {{ flashMessages.has('errors.email') ? 'is-danger' : '' }}"
                     placeholder="email"
@@ -80,18 +79,16 @@
               {{ flashMessages.get('errors.cnpj') }}
             </p>
           @endif
-          @if(flashMessages.has('errors.razaosocial'))
+          @if(flashMessages.has('errors.razaoSocial'))
             <p class="help is-danger">
-              {{ flashMessages.get('errors.razaosocial') }}
+              {{ flashMessages.get('errors.razaoSocial') }}
             </p>
           @endif
-          
           @if(flashMessages.has('errors.email'))
             <p class="help is-danger">
               {{ flashMessages.get('errors.email') }}
             </p>
           @endif
-
         </form>
         @if(flashMessages.has('notification'))
           <div class="notification is-success is-light">
@@ -105,57 +102,37 @@
             <thead>
               <tr>
                  <div class="is-hidden-mobile">
-                  <th>
-                      CNPJ
-                  </th>
+                  <th>CNPJ</th>
                 </div>
-
-                <th>
-                  Razão Social
-                </th>
-                <th>
-                   e-mail
-                </th>
-
-                <th class="has-text-centered">
-                  Ações
-                </th>
+                <th>Razão Social</th>
+                <th>e-mail</th>
+                <th class="has-text-centered">Ações</th>
               </tr>
             </thead>
             <tbody>
               @each(empresa in empresas)
               <tr>
                 <div class="is-hidden-mobile">
-                  <td>
-                      {{ empresa.cnpj }}
-                  </td>
+                  <td>{{ empresa.cnpj }}</td>
                 </div>
-                
-
-                <td>
-                    {{ empresa.razaosocial }}
-                </td>
-                <td>
-                {{ empresa.email }}
-                </td>
+                <td>{{ empresa.razaoSocial }}</td>
+                <td>{{ empresa.email }}</td>
                 <td class="has-text-centered">
                   <form action="{{ `/empresas/${empresa.id}?_method=DELETE` }}" method="post">
                     {{ csrfField() }}
-
                     <button
-                    type="button"
-                    class="button is-small is-primary"
-                    onclick="window.location.href='{{ `/empresas/${empresa.id}` }}'"
-                    >
-                    <span class="icon is-small">
-                      <i class="fas fa-edit"></i>
-                    </span>
+                      type="button"
+                      class="button is-small is-primary"
+                      onclick="window.location.href='{{ `/empresas/${empresa.id}` }}'" >
+                      <span class="icon is-small">
+                        <i class="fas fa-edit"></i>
+                      </span>
                       <span>Editar</span>
                     </button>
                     <button type="submit" class="button is-small is-danger">
                       <span class="icon is-small">
                       <i class="fas fa-trash"></i>
-                    </span>
+                      </span>
                       <span>Excluir</span>
                     </button>
                   </form>

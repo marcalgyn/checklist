@@ -9,7 +9,7 @@ export default class Empresa extends BaseModel {
   public cnpj: string
 
   @column()
-  public razaosocial: string
+  public razaoSocial: string
 
   @column()
   public email: string
