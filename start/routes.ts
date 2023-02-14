@@ -24,13 +24,13 @@ Route.group(() => {
   .middleware("auth");
 
 Route.group(() => {
-  Route.get("/", "OrdensController.index");
-  Route.get("/:id", "OrdensController.edit");
-  Route.post("/", "OrdensController.create");
-  Route.post("/:id", "OrdensController.update");
-  Route.delete("/:id", "OrdensController.delete");
+  Route.get("/", "TarefaController.index");
+  Route.get("/:id", "TarefaController.edit");
+  Route.post("/", "TarefaController.create");
+  Route.post("/:id", "TarefaController.update");
+  Route.delete("/:id", "TarefaController.delete");
 })
-  .prefix("/ordens")
+  .prefix("/tarefas")
   .middleware("auth");
 
 Route.get("/register", "AuthController.showRegister").middleware("guest");

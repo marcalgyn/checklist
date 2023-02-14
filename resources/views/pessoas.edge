@@ -89,22 +89,18 @@
                 <div class="field is-horizontal">
                   <label class="label" style="margin-right: 5px;">Cargo: </label>
                   <div class="select is-expanded">
-                    {{objPessoa.cargo}}
                     <select id="cargo" name="cargo" required>
-                      <option value="0" @if(objPessoa.cargo === 0) selected @end >Selecione um Cargo</option>
-                      <option value="1" @if(objPessoa.cargo === 1) selected @end > Diretor </option>
-                      <option value="2" @if(objPessoa.cargo === 2) selected @end > Gerente </option>
-                      <option value="3" @if(objPessoa.cargo === 3) selected @end > Encarregado </option>
+                      <option value="0" {{ objPessoa.cargo === 0 ? 'selected': '' }}> Selecione um Cargo </option>
+                      <option value="1" {{ objPessoa.cargo === 1 ? 'selected': '' }}> Diretor </option>
+                      <option value="2" {{ objPessoa.cargo === 2 ? 'selected': '' }}> Gerente </option>
+                      <option value="3" {{ objPessoa.cargo === 3 ? 'selected': '' }}> Encarregado </option>
                     </select>
                   </div>
                 </div>
                 <div class="field">
                   <label class="checkbox">
-                    @if(objPessoa.ativo)
-                      <input type="checkbox" id="ativo" name="ativo" value="true" checked><strong> Ativo? </strong>
-                    @else
-                      <input type="checkbox" id="ativo" name="ativo" value="false"><strong> Ativo? </strong>
-                    @end
+                      <input type="checkbox" id="ativo" name="ativo" value={{objPessoa.ativo}} {{ objPessoa.ativo ? 'checked': '' }}>
+                      <strong> Ativo? </strong>
                   </label>
                 </div>
               </div>
@@ -120,7 +116,10 @@
                 </div>
                 <div class="control">
                   <button type="button" class="button is-warning" onclick="window.location.href='{{ `/pessoas` }}'">
-                    Cancelar
+                    <span class="icon is-small">
+                      <i class="fas fa-window-restore"></i>
+                    </span>
+                    <span>Cancelar</span>
                   </button>
                 </div>
               </div>
@@ -154,7 +153,7 @@
                   <td>{{ pessoa.name }}</td>
                   <td class="has-text-centered">{{ pessoa.telefone }}</td>
                   <td class="has-text-centered">{{ pessoa.cargo === 1 ? 'Diretor' : pessoa.cargo === 2 ? 'Gerente' : 'Encarregado'}}</td>
-                  <td class="has-text-centered">{{ pessoa.ativo === 0 ? 'Ativo' : 'Não'}}</td>
+                  <td class="has-text-centered">{{ pessoa.ativo === 1 ? 'Sim' : 'Não'}}</td>
                   <td class="has-text-centered">
                     <form action="{{ `/pessoas/${pessoa.id}?_method=DELETE` }}" method="post">
                       {{ csrfField() }}

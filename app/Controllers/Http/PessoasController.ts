@@ -26,14 +26,6 @@ export default class PessoasController {
   }
 
   public async create({ request, response, session }: HttpContextContract) {
-    console.log(request.input("id"));
-    console.log(request.input("name"));
-    console.log(request.input("email"));
-    console.log(request.input("telefone"));
-    console.log(request.input("cargo"));
-    console.log(request.input("ativo"));
-    console.log(request.input("password"));
-
     try {
       if (request.input("id") === "0") {
         const validationSchema = schema.create({
@@ -61,8 +53,6 @@ export default class PessoasController {
           },
         });
 
-        console.log("Id Pessoa no try", request.input("id"));
-        console.log("Inserindo");
         await Pessoa.create({
           name: validateData.name,
           email: validateData.email,
@@ -73,8 +63,6 @@ export default class PessoasController {
         });
         session.flash("notification", "Pessoa adicionado com sucesso!");
       } else {
-        console.log("Alterando ", request.input("ativo"));
-
         const pessoa = await Pessoa.findOrFail(request.input("id"));
         pessoa.name = request.input("name");
         pessoa.email = request.input("email");
@@ -92,7 +80,6 @@ export default class PessoasController {
       }
       session.flash("notification", msg);
     }
-    console.log("saindo");
     return response.redirect("back");
   }
 
