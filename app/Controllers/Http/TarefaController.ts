@@ -1,8 +1,11 @@
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
+import Empresa from "App/Models/Empresa";
 import Tarefa from "App/Models/Tarefa";
 
 export default class TarefaController {
   public async index({ view }: HttpContextContract) {
+    const empresas = await Empresa.all()
+
     const objTarefa = {
       id: 0,
       empOrigem: "",
@@ -20,7 +23,7 @@ export default class TarefaController {
     };
     const tarefas = await Tarefa.query().orderBy("descricao", "asc");
 
-    return view.render("tarefa", { objTarefa, tarefas });
+    return view.render("tarefa", { objTarefa, tarefas, empresas });
   }
 
   public async edit({ view, params }: HttpContextContract) {
