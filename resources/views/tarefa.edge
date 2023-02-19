@@ -28,10 +28,10 @@
                   <div class="field">
                     <label class="label">Empresa</label>
                     <div class="select is-fullwidth">
-                      <select name="cnpjEmitente" required>
+                      <select name="empDestino" required>
                         <option value="">Selecione uma Empresa</option>
                         @each(empresa in empresas)
-                        <option value="{{ empresa.cnpj }}">{{ empresa.razaoSocial }}</option>
+                        <option value="{{ empresa.id }}">{{ empresa.razaoSocial }}</option>
                         @endeach
                       </select>
                     </div>
@@ -39,10 +39,10 @@
                   <div class="field">
                     <label class="label">Responsável</label>
                     <div class="select is-fullwidth">
-                      <select name="cnpjEmitente" required>
+                      <select name="usuDestino" required>
                         <option value="">Selecione uma Empresa</option>
                         @each(empresa in empresas)
-                        <option value="{{ empresa.cnpj }}">{{ empresa.razaoSocial }}</option>
+                        <option value="{{ empresa.id }}">{{ empresa.razaoSocial }}</option>
                         @endeach
                       </select>
                     </div>
@@ -52,14 +52,14 @@
                 <div class="field">
                   <label class="label">Descrição da Tarefa</label>
                   <div class="control is-expanded">
-                    <textarea class="textarea" placeholder="Detalhes..."></textarea>
+                    <textarea class="textarea" name="descricao" placeholder="Detalhes..."></textarea>
                   </div>
                 </div>
                 <div class="field-body">
                   <div class="field">
-                    <div id="file-js-example" class="file has-name is-fullwidth is-warning">
+                    <div id="file-abertura" class="file is-warning">
                       <label class="file-label">
-                        <input class="file-input" type="file" name="resume" required>
+                        <input class="file-input" type="file" name="urlOrigem" required>
                         <span class="file-cta">
                           <span class="file-icon">
                             <i class="fas fa-upload"></i>
@@ -68,15 +68,16 @@
                             Abertura
                           </span>
                         </span>
-                        <span class="file-name">
-                          Nenhum arquivo selecionado
-                        </span>
+                        <figure class="image ml-2" style="width: 192px;">
+                          <img id="output">
+                        </figure>
                       </label>
                     </div>
-                    <br>
-                    <div id="file-js-example1" class="file has-name is-fullwidth is-primary">
+                  </div>
+                  <div class="field">
+                    <div id="file-concluido" class="file is-primary">
                       <label class="file-label">
-                        <input class="file-input" type="file" name="resume" required>
+                        <input class="file-input" type="file" name="urlFinal" required>
                         <span class="file-cta">
                           <span class="file-icon">
                             <i class="fas fa-upload"></i>
@@ -85,26 +86,25 @@
                             Concluído
                           </span>
                         </span>
-                        <span class="file-name">
-                          Nenhum arquivo selecionado
-                        </span>
+                        <figure class="image ml-2" style="width: 192px;">
+                          <img id="output2">
+                        </figure>
                       </label>
                     </div>
                   </div>
                 </div>
-
               </div>
               <div class="column">
                 <div class="field">
                   <label class="label">Data Registro</label>
                   <div class="control is-expanded">
-                    <input type="date" name="dataOrigem" class="input">
+                    <input type="date" name="dataOrigem" class="input" required>
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Data Previsão</label>
                   <div class="control is-expanded">
-                    <input type="date" name="dataPrevisao" class="input">
+                    <input type="date" name="dataPrevisao" class="input" required>
                   </div>
                 </div>
                 <div class="field">
@@ -118,15 +118,19 @@
                 <div class="box">
                   <div class="control">
                     <label class="radio">
-                      <input type="radio" name="rsvp">
+                      <input type="radio" name="status" value="Em Andamento" checked>
+                      Em Execução
+                    </label><br>
+                    <label class="radio">
+                      <input type="radio" name="status" value="Completo">
                       Completo
                     </label><br>
                     <label class="radio">
-                      <input type="radio" name="rsvp">
+                      <input type="radio" name="status" value="Parcial">
                       Parcial
                     </label><br>
-                    <label class="radio" disabled>
-                      <input type="radio" name="rsvp">
+                    <label class="radio">
+                      <input type="radio" name="status" value="Cancelado">
                       Cancelado
                     </label>
                   </div>
@@ -161,16 +165,33 @@
   </div>
 </div>
 <script>
-  const fileInput = document.querySelector('#file-js-example input[type=file]');
+  /***** Script do upload da imagem de abertura da tarefa *********/
+  const fileInput = document.querySelector('#file-abertura input[type=file]');
   fileInput.onchange = () => {
     if (fileInput.files.length > 0) {
-      let info = fileInput.files[0].name;
-      const fileName = document.querySelector('#file-js-example .file-name');
-      if (fileInput.files.length > 1) {
-        info = fileInput.files.length + ' arquivos selecionados'
+      /***** Pré-visualização da imagem de abertura da tarefa *********/
+      const output = document.getElementById('output');
+      output.src = URL.createObjectURL(fileInput.files[0]);
+      output.onload = function () {
+        URL.revokeObjectURL(output.src) // free memory
       }
-      fileName.textContent = info;
+
     }
   }
+  /***** Fim do Script de abertura *************************/
+
+  /***** Script do upload da imagem de conclusão da tarefa *********/
+  const fileInput2 = document.querySelector('#file-concluido input[type=file]');
+  fileInput2.onchange = () => {
+    if (fileInput2.files.length > 0) {
+      /***** Pré-visualização da imagem de conclusão da tarefa *********/
+      const output2 = document.getElementById('output2');
+      output2.src = URL.createObjectURL(fileInput2.files[0]);
+      output2.onload = function () {
+        URL.revokeObjectURL(output2.src) // free memory
+      }
+    }
+  }
+  /***** Fim do Script de conclusão da tarefa *************************/
 </script>
 @endsection

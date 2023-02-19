@@ -12,19 +12,19 @@ export default class Tarefa extends BaseModel {
   public usuOrigem: string;
 
   @column()
-  public empDestino: string;
+  public empDestino: number;
 
   @column()
-  public usuDestino: string;
+  public usuDestino: number;
 
   @column()
-  public dataOrigem: Date;
+  public dataOrigem: DateTime;
 
   @column()
-  public dataPrevisao: Date;
+  public dataPrevisao: DateTime;
 
   @column()
-  public dataConclusao: Date;
+  public dataConclusao: DateTime;
 
   @column()
   public descricao: string;
@@ -33,7 +33,7 @@ export default class Tarefa extends BaseModel {
   public planoAcao: string;
 
   @column()
-  public estatus: string;
+  public status: string;
 
   @column()
   public urlOrigem: string;
