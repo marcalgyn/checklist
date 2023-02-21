@@ -14,8 +14,8 @@ export default class Tarefas extends BaseSchema {
       table.date("data_previsao").nullable();
       table.date("data_conclusao").nullable();
       table.string("descricao", 500).notNullable();
-      table.string("plano_acao", 500).nullable();
-      table.string("estatus").notNullable();
+      table.integer("prioridade", 1).defaultTo(1);
+      table.string("status_tarefa").notNullable();
       table.string("url_origem", 500).nullable();
       table.string("url_final", 500).nullable();
       table.timestamp("created_at", { useTz: true });

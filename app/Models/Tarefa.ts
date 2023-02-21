@@ -9,7 +9,7 @@ export default class Tarefa extends BaseModel {
   public empOrigem: string;
 
   @column()
-  public usuOrigem: string;
+  public usuOrigem: number;
 
   @column()
   public empDestino: number;
@@ -17,23 +17,23 @@ export default class Tarefa extends BaseModel {
   @column()
   public usuDestino: number;
 
-  @column()
+  @column.dateTime()
   public dataOrigem: DateTime;
 
-  @column()
+  @column.dateTime()
   public dataPrevisao: DateTime;
 
-  @column()
+  @column.dateTime()
   public dataConclusao: DateTime;
 
   @column()
   public descricao: string;
 
   @column()
-  public planoAcao: string;
+  public prioridade: number;
 
   @column()
-  public status: string;
+  public statusTarefa: string;
 
   @column()
   public urlOrigem: string;

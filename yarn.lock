@@ -1217,7 +1217,14 @@ builtins@^1.0.3:
   resolved "https://registry.npmjs.org/builtins/-/builtins-1.0.3.tgz"
   integrity sha512-uYBjakWipfaO/bXI7E8rq6kpwHRZK5cNYrUv2OzZSI/FvmdMyXJ2tG9dKcjEC5YHmHpUAwsargWIZNWdxb/bnQ==
 
-bulma@^0.9.4:
+bulma-calendar@^6.1.18:
+  version "6.1.18"
+  resolved "https://registry.npmjs.org/bulma-calendar/-/bulma-calendar-6.1.18.tgz"
+  integrity sha512-7yXo7YTNxx3adrPdBBWdWEuxvowpTjJcfpRuEj7lqK52LWb79CjG9F6uKxUpB5DSguUyKflHnimRsRjjQJgZlw==
+  dependencies:
+    date-fns "^2.21.3"
+
+bulma@^0.9.3, bulma@^0.9.4:
   version "0.9.4"
   resolved "https://registry.npmjs.org/bulma/-/bulma-0.9.4.tgz"
   integrity sha512-86FlT5+1GrsgKbPLRRY7cGDg8fsJiP/jzTqXXVqiUZZ2aZT8uemEOHlU1CDU+TxklPEZ11HZNNWclRBBecP4CQ==
@@ -1660,6 +1667,11 @@ data-uri-to-buffer@^2.0.0:
   version "2.0.2"
   resolved "https://registry.npmjs.org/data-uri-to-buffer/-/data-uri-to-buffer-2.0.2.tgz"
   integrity sha512-ND9qDTLc6diwj+Xe5cdAgVTbLVdXbtxTJRXRhli8Mowuaan+0EJOtdqJ0QCHNSSPyoXGx9HX2/VMnKeC34AChA==
+
+date-fns@^2.21.3:
+  version "2.29.3"
+  resolved "https://registry.npmjs.org/date-fns/-/date-fns-2.29.3.tgz"
+  integrity sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==
 
 dateformat@^4.6.3:
   version "4.6.3"

@@ -7,6 +7,7 @@
       <form action="/tarefas" method="post">
         {{ csrfField() }}
         <input type="hidden" name="id" value={{ objTarefa.id }}>
+        <input type="hidden" name="usuOrigem" value={{ auth.user.id }}>
 
         <div class="card has-background-light">
           <header class="card-header has-background-link">
@@ -21,8 +22,27 @@
             </div>
             <div class="columns">
               <div class="column is-three-fifths">
-                <div class="field">
-                  <label class="label">Para: </label>
+                <div class="field-body mb-3">
+                  <div class="field">
+                    <label class="label">Para: </label>
+                  </div>
+                  <div class="field is-horizontal">
+                    <label class="label">Prioridade: </label>
+                    <div class="control ml-5">
+                      <label class="radio">
+                        <input type="radio" name="prioridade" value="1" style="accent-color: red;">
+                        <span style="font-weight: bold; color: red">Alta</span>
+                      </label>
+                      <label class="radio">
+                        <input type="radio" name="prioridade" value="2" style="accent-color: orange;">
+                        <span style="font-weight: bold; color: orange">Média</span>
+                      </label>
+                      <label class="radio">
+                        <input type="radio" name="prioridade" value="3" style="accent-color: green;">
+                        <span style="font-weight: bold; color: green">Baixa</span>
+                      </label>
+                    </div>
+                  </div>
                 </div>
                 <div class="field-body">
                   <div class="field">
@@ -40,9 +60,9 @@
                     <label class="label">Responsável</label>
                     <div class="select is-fullwidth">
                       <select name="usuDestino" required>
-                        <option value="">Selecione uma Empresa</option>
-                        @each(empresa in empresas)
-                        <option value="{{ empresa.id }}">{{ empresa.razaoSocial }}</option>
+                        <option value="">Selecione um Responsável</option>
+                        @each(pessoa in pessoas)
+                        <option value="{{ pessoa.id }}">{{ pessoa.name }}</option>
                         @endeach
                       </select>
                     </div>
@@ -96,6 +116,12 @@
               </div>
               <div class="column">
                 <div class="field">
+                  <label class="label">Date</label>
+                  <div class="control">
+                    <bulma_calendar type="date" name="date" />
+                  </div>
+                </div>
+                <div class="field">
                   <label class="label">Data Registro</label>
                   <div class="control is-expanded">
                     <input type="date" name="dataOrigem" class="input" required>
@@ -118,19 +144,19 @@
                 <div class="box">
                   <div class="control">
                     <label class="radio">
-                      <input type="radio" name="status" value="Em Andamento" checked>
+                      <input type="radio" name="statusTarefa" value="EmAndamento" checked>
                       Em Execução
                     </label><br>
                     <label class="radio">
-                      <input type="radio" name="status" value="Completo">
+                      <input type="radio" name="statusTarefa" value="Completo">
                       Completo
                     </label><br>
                     <label class="radio">
-                      <input type="radio" name="status" value="Parcial">
+                      <input type="radio" name="statusTarefa" value="Parcial">
                       Parcial
                     </label><br>
                     <label class="radio">
-                      <input type="radio" name="status" value="Cancelado">
+                      <input type="radio" name="statusTarefa" value="Cancelado">
                       Cancelado
                     </label>
                   </div>
@@ -161,6 +187,12 @@
           </div>
         </div>
       </form>
+      @if(flashMessages.has('notification'))
+      <div class="notification is-success is-light">
+        <button class="delete"></button>
+        {{ flashMessages.get('notification') }}
+      </div>
+      @endif
     </div>
   </div>
 </div>
@@ -193,5 +225,27 @@
     }
   }
   /***** Fim do Script de conclusão da tarefa *************************/
+
+  // Initialize all input of type date
+  var calendars = bulmaCalendar.attach('[type="date"]', options);
+
+  // Loop on each calendar initialized
+  for (var i = 0; i < calendars.length; i++) {
+    // Add listener to select event
+    calendars[i].on('select', date => {
+      console.log(date);
+    });
+  }
+
+  // To access to bulmaCalendar instance of an element
+  var element = document.querySelector('#my-element');
+  if (element) {
+    // bulmaCalendar instance is available as element.bulmaCalendar
+    element.bulmaCalendar.on('select', function (datepicker) {
+      console.log(datepicker.data.value());
+    });
+  }
+
 </script>
+
 @endsection

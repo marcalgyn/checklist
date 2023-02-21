@@ -1,25 +1,34 @@
-import View from '@ioc:Adonis/Core/View'
-import moment from 'moment'
+import View from "@ioc:Adonis/Core/View";
+import { DateTime } from "luxon";
 
-View.global('formatDate', function (date: Date) {
-  return moment(date).format('DD/MM/YYYY')
-})
+View.global("formatDate", function (date: DateTime) {
+  if (date) {
+    return date.toLocaleString(DateTime.DATE_SHORT);
+  } else {
+    return "";
+  }
+});
 
-View.global('formatCurrency', function (valor: number) {
-  return valor.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
-})
+View.global("formatCurrency", function (valor: number) {
+  return valor.toLocaleString("pt-br", { style: "currency", currency: "BRL" });
+});
 
-View.global('formatCnpj', function (strCnpj: string) {
-
+View.global("formatCnpj", function (strCnpj: string) {
   if (strCnpj.length === 14) {
-    strCnpj = strCnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
+    strCnpj = strCnpj.replace(
+      /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/,
+      "$1.$2.$3/$4-$5"
+    );
   } else if (strCnpj.length < 14) {
-    const diff = 14 - strCnpj.length
+    const diff = 14 - strCnpj.length;
     for (let index = 0; index < diff; index++) {
-      strCnpj = '0' + strCnpj;
+      strCnpj = "0" + strCnpj;
     }
-    strCnpj = strCnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")
+    strCnpj = strCnpj.replace(
+      /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/,
+      "$1.$2.$3/$4-$5"
+    );
   }
 
-  return strCnpj
-})
+  return strCnpj;
+});
