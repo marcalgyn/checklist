@@ -20,7 +20,7 @@ export default class TarefaController {
       dataConclusao: new Date(),
       descricao: "",
       prioridade: 1,
-      estatus: "",
+      statusTarefa: "",
       urlOrigem: "",
       urlFinal: "",
     };
@@ -30,46 +30,37 @@ export default class TarefaController {
 
   public async edit({ view, params }: HttpContextContract) {
     const objTarefa = await Tarefa.findOrFail(params.id);
-    const tarefas = await Tarefa.query().orderBy("descricao", "asc");
+    console.log("Tarefa", objTarefa.$attributes);
 
-    return view.render("tarefa", { objTarefa, tarefas });
+    return view.render("tarefa", { objTarefa });
   }
 
   public async create({ request, response, session }: HttpContextContract) {
-    const validationSchema = schema.create({
-      prioridade: schema.number(),
-      empDestino: schema.number(),
-      usuOrigem: schema.number(),
-      usuDestino: schema.number(),
-      descricao: schema.string({ trim: true }),
-      urlOrigem: schema.string({ trim: true }),
-      urlFinal: schema.string({ trim: true }),
-      dataOrigem: schema.date(),
-      dataPrevisao: schema.date(),
-      dataConclusao: schema.date(),
-      statusTarefa: schema.string({ trim: true }),
-    });
-
-    const validateData = await request.validate({ schema: validationSchema });
-
     try {
+      const validationSchema = schema.create({
+        prioridade: schema.number(),
+        empOrigem: schema.number(),
+        empDestino: schema.number(),
+        usuOrigem: schema.number(),
+        usuDestino: schema.number(),
+        descricao: schema.string({ trim: true }),
+        urlOrigem: schema.string({ trim: true }),
+        urlFinal: schema.string({ trim: true }),
+        dataOrigem: schema.date(),
+        dataPrevisao: schema.date(),
+        statusTarefa: schema.string({ trim: true }),
+      });
+
+      const validateData = await request.validate({ schema: validationSchema });
+      console.log("ValidateData", validateData);
+
       if (request.input("id") === "0") {
-        await Tarefa.create({
-          prioridade: validateData.prioridade,
-          empDestino: validateData.empDestino,
-          usuDestino: validateData.usuDestino,
-          usuOrigem: validateData.usuOrigem,
-          descricao: validateData.descricao,
-          urlOrigem: validateData.urlOrigem,
-          urlFinal: validateData.urlFinal,
-          dataOrigem: validateData.dataOrigem,
-          dataPrevisao: validateData.dataPrevisao,
-          dataConclusao: validateData.dataConclusao,
-          statusTarefa: validateData.statusTarefa,
-        });
+        await Tarefa.create(validateData);
         session.flash("notification", "Tarefa adicionada com sucesso!");
       } else {
         const tarefa = await Tarefa.findOrFail(request.input("id"));
+        tarefa.empOrigem = request.input("empOrigem");
+        tarefa.usuOrigem = request.input("usuDestino");
         tarefa.empDestino = request.input("empDestino");
         tarefa.usuDestino = request.input("usuDestino");
         tarefa.descricao = request.input("descricao");

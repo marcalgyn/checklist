@@ -32,14 +32,14 @@ export default class PessoasController {
           name: schema.string(),
           email: schema.string({ trim: true }, [
             rules.email(),
-            rules.maxLength(255),
+            rules.maxLength(180),
             rules.unique({ table: "pessoas", column: "email" }),
           ]),
           telefone: schema.string(),
           cargo: schema.string(),
-          ativo: schema.string(),
           password: schema.string({ trim: true }, [rules.confirmed()]),
         });
+        console.log("validationSchema Pessoa", validationSchema);
 
         const validateData = await request.validate({
           schema: validationSchema,
@@ -48,32 +48,35 @@ export default class PessoasController {
             "email.required": "Informe o email",
             "telefone.required": "Informe o telefone",
             "cargo.required": "Informe o cargo",
-            "ativo.required": "Informe o ativo",
             "password.required": "Informe a senha",
           },
         });
+
+        console.log("Validate Pessoa", validateData);
 
         await Pessoa.create({
           name: validateData.name,
           email: validateData.email,
           telefone: validateData.telefone,
           cargo: Number(validateData.cargo),
-          ativo: Boolean(validateData.ativo),
+          ativo: !!request.input("ativo"),
           password: validateData.password,
         });
         session.flash("notification", "Pessoa adicionado com sucesso!");
       } else {
+        console.log("Ativo", !!request.input("ativo"));
         const pessoa = await Pessoa.findOrFail(request.input("id"));
         pessoa.name = request.input("name");
         pessoa.email = request.input("email");
         pessoa.telefone = request.input("telefone");
         pessoa.cargo = request.input("cargo");
-        pessoa.ativo = request.input("ativo");
+        pessoa.ativo = !!request.input("ativo");
         pessoa.password = request.input("password");
         await pessoa.save();
         session.flash("notification", "Pessoa alterado com sucesso!");
       }
     } catch (error) {
+      console.log("Erro Pessoa", error);
       let msg: string = "";
       if (error.code === "ER_DUP_ENTRY") {
         msg = `Erro na operação solicitada!`;

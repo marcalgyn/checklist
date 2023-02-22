@@ -1,12 +1,14 @@
-import { BaseModel, column } from "@ioc:Adonis/Lucid/Orm";
+import { BaseModel, BelongsTo, belongsTo, column } from "@ioc:Adonis/Lucid/Orm";
 import { DateTime } from "luxon";
+import Empresa from "./Empresa";
+import Pessoa from "./Pessoa";
 
 export default class Tarefa extends BaseModel {
   @column({ isPrimary: true })
   public id: number;
 
   @column()
-  public empOrigem: string;
+  public empOrigem: number;
 
   @column()
   public usuOrigem: number;
@@ -43,4 +45,16 @@ export default class Tarefa extends BaseModel {
 
   @column.dateTime({ autoCreate: true })
   public createdAt?: DateTime;
+
+  @belongsTo(() => Empresa)
+  public empresaOrigem: BelongsTo<typeof Empresa>;
+
+  @belongsTo(() => Pessoa)
+  public usuarioOrigem: BelongsTo<typeof Pessoa>;
+
+  @belongsTo(() => Empresa)
+  public empresaDestino: BelongsTo<typeof Empresa>;
+
+  @belongsTo(() => Pessoa)
+  public usuarioDestino: BelongsTo<typeof Pessoa>;
 }

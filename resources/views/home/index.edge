@@ -111,16 +111,13 @@
                 {{{ formatDate(tarefa.dataConclusao) }}}
               </td>
               <td class="has-text-centered">
-                <form action="{{ `/tarefas/${tarefa.id}?_method=DELETE` }}" method="post">
-                  {{ csrfField() }}
-
-                  <button type="submit" class="button is-small is-danger">
-                    <span class="icon is-small">
-                      <i class="fas fa-trash"></i>
-                    </span>
-                    <span>Finalizar</span>
-                  </button>
-                </form>
+                <button type="button" class="button is-small is-primary"
+                  onclick="window.location.href='{{ `/tarefas/${tarefa.id}` }}'">
+                  <span class="icon is-small">
+                    <i class="fas fa-edit"></i>
+                  </span>
+                  <span>Editar</span>
+                </button>
               </td>
             </tr>
             @else
