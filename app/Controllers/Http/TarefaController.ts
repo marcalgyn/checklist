@@ -45,7 +45,7 @@ export default class TarefaController {
         usuDestino: schema.number(),
         descricao: schema.string({ trim: true }),
         urlOrigem: schema.string({ trim: true }),
-        urlFinal: schema.string({ trim: true }),
+        urlFinal: schema.string(),
         dataOrigem: schema.date(),
         dataPrevisao: schema.date(),
         statusTarefa: schema.string({ trim: true }),
