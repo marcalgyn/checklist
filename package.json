@@ -29,7 +29,6 @@
     "@fortawesome/fontawesome-free": "^6.2.1",
     "bulma": "^0.9.4",
     "bulma-calendar": "^6.1.18",
-    "force": "^0.0.3",
     "json-and-xlsx": "^2.1.2",
     "json2xls": "^0.1.2",
     "latest-version": "^7.0.0",
