@@ -11,6 +11,7 @@ export default class Pessoas extends BaseSchema {
       table.string("telefone", 20).nullable();
       table.integer("cargo").nullable();
       table.boolean("ativo").nullable().defaultTo(0);
+      table.boolean("desligado").nullable().defaultTo(0);
       table.string("password", 180).notNullable();
       table.string("remember_me_token").nullable();
       table

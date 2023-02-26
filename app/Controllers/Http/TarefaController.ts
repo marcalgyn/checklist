@@ -7,7 +7,9 @@ import Tarefa from "App/Models/Tarefa";
 export default class TarefaController {
   public async index({ view }: HttpContextContract) {
     const empresas = await Empresa.all();
-    const pessoas = await Pessoa.query().where("ativo", true).orderBy("name");
+    const pessoas = await Pessoa.query()
+      .where({ ativo: true, desligado: false })
+      .orderBy("name");
 
     const objTarefa = {
       id: 0,
@@ -20,7 +22,7 @@ export default class TarefaController {
       dataConclusao: new Date(),
       descricao: "",
       prioridade: 1,
-      statusTarefa: "",
+      statusTarefa: "Novo",
       urlOrigem: "",
       urlFinal: "",
     };
@@ -44,8 +46,6 @@ export default class TarefaController {
         usuOrigem: schema.number(),
         usuDestino: schema.number(),
         descricao: schema.string({ trim: true }),
-        urlOrigem: schema.string({ trim: true }),
-        urlFinal: schema.string({ trim: true }),
         dataOrigem: schema.date(),
         dataPrevisao: schema.date(),
         statusTarefa: schema.string({ trim: true }),

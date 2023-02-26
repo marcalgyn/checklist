@@ -3,6 +3,58 @@
 @section('content')
 <div class="columns">
   <div class="column is-full">
+    @if(flashMessages.has('notificationActivate'))
+    <div class="notification is-success is-light">
+      <button class="delete"></button>
+      {{ flashMessages.get('notificationActivate') }}
+    </div>
+    @endif
+    @if(addPessoas.length !== 0)
+    <div class="box">
+      <header class="card-header has-background-primary">
+        <p class="title is-4 p-3 has-text-white">
+          Ativar Pessoas no sistema Checklist
+        </p>
+      </header>
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th>
+              Nome
+            </th>
+            <th class="has-text-centered">
+              Data Cadastro
+            </th>
+            <th class="has-text-centered">
+              Ativar
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          @each(pessoa in addPessoas)
+          <tr>
+            <td>
+              {{ pessoa.name }}
+            </td>
+            <td class="has-text-centered">
+              {{{ formatDateTime(pessoa.createdAt) }}}
+            </td>
+            <td class="has-text-centered">
+              <form action="{{ `/pessoas/${pessoa.id}?_method=PATCH` }}" method="post">
+                {{ csrfField() }}
+
+                <label for="completed" class="checkbox">
+                  <input type="checkbox" name="activated" onchange="this.form.submit()" {{ pessoa.ativo ? 'checked' : ''
+                    }}>
+                </label>
+              </form>
+            </td>
+          </tr>
+          @endeach
+        </tbody>
+      </table>
+    </div>
+    @endif
     <div class="box">
       <form action="/tarefas/findBy" method="post">
         {{ csrfField() }}
@@ -17,15 +69,24 @@
             <div class="field-body">
               <div class="field">
                 <label class="label">Empresa</label>
-                <div class="control is-expanded">
-                  <input id="cnpj" type="text" name="cnpjEmitente" class="input"
-                    placeholder="Buscar pelo CNPJ da Empresa" value="{{ cnpjEmitente }}" required>
+                <div class="select is-fullwidth">
+                  <select name="empDestino" required>
+                    <option value="">Selecione uma Empresa</option>
+                    @each(empresa in empresas)
+                    <option value="{{ empresa.id }}">{{ empresa.razaoSocial }}</option>
+                    @endeach
+                  </select>
                 </div>
               </div>
               <div class="field">
                 <label class="label">Responsável</label>
-                <div class="control is-expanded">
-                  <input type="text" name="empDestino" class="input" placeholder="Buscar pelo Número da NF">
+                <div class="select is-fullwidth">
+                  <select name="usuDestino" required>
+                    <option value="">Selecione um Responsável</option>
+                    @each(pessoa in pessoas)
+                    <option value="{{ pessoa.id }}">{{ pessoa.name }}</option>
+                    @endeach
+                  </select>
                 </div>
               </div>
               <div class="field">
@@ -38,6 +99,18 @@
                 <label class="label">Data Conclusão</label>
                 <div class="control is-expanded">
                   <input type="date" name="dataConclusao" class="input" placeholder="Digite a Data de Conclusão">
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Status da Tarefa</label>
+                <div class="select is-fullwidth">
+                  <select name="usuDestino" required>
+                    <option value="">Selecione um Status</option>
+                    <option value="Novo">Novo</option>
+                    <option value="Completo">Completo</option>
+                    <option value="Parcial">Parcial</option>
+                    <option value="Cancelado">Cancelado</option>
+                  </select>
                 </div>
               </div>
             </div>

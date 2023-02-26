@@ -9,6 +9,20 @@ View.global("formatDate", function (date: DateTime) {
   }
 });
 
+View.global("formatDateTime", function (date: DateTime) {
+  if (date) {
+    return date.toLocaleString({
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  } else {
+    return "";
+  }
+});
+
 View.global("formatCurrency", function (valor: number) {
   return valor.toLocaleString("pt-br", { style: "currency", currency: "BRL" });
 });

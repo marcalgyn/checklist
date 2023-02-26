@@ -3,17 +3,21 @@ import { rules, schema } from "@ioc:Adonis/Core/Validator";
 import Pessoa from "App/Models/Pessoa";
 
 export default class AuthController {
+  public async showLogin({ view }: HttpContextContract) {
+    return view.render("auth/login");
+  }
+
   public showRegister({ view }: HttpContextContract) {
     return view.render("auth/register");
   }
 
-  public async register({ request, auth, response }: HttpContextContract) {
+  public async register({ request, view }: HttpContextContract) {
     const validationSchema = schema.create({
       ativo: schema.boolean(),
       name: schema.string({ trim: true }),
       email: schema.string({ trim: true }, [
         rules.email(),
-        rules.maxLength(255),
+        rules.maxLength(180),
         rules.unique({ table: "pessoas", column: "email" }),
       ]),
       password: schema.string({ trim: true }, [rules.confirmed()]),
@@ -23,21 +27,9 @@ export default class AuthController {
       schema: validationSchema,
     });
 
-    const pessoa = await Pessoa.create(validateData);
+    const objPessoa = await Pessoa.create(validateData);
 
-    await auth.login(pessoa);
-
-    return response.redirect("/home");
-  }
-
-  public async logout({ auth, response }: HttpContextContract) {
-    await auth.logout();
-
-    return response.redirect("/login");
-  }
-
-  public async showLogin({ view }: HttpContextContract) {
-    return view.render("auth/login");
+    return view.render("welcome", { objPessoa });
   }
 
   public async login({
@@ -50,7 +42,30 @@ export default class AuthController {
 
     try {
       await auth.attempt(email, password);
-      return response.redirect("/home");
+      const isAtivo: boolean = auth.user?.$original.ativo;
+      const isDesligado: boolean = auth.user?.$original.desligado;
+
+      console.log("Desligado", isDesligado);
+
+      if (isDesligado) {
+        await auth.logout();
+        session.flash(
+          "notification",
+          "O seu acesso ao sistema foi bloqueado, favor falar com a administração."
+        );
+        return response.redirect("back");
+      }
+
+      if (isAtivo) {
+        return response.redirect("/home");
+      } else {
+        await auth.logout();
+        session.flash(
+          "notification",
+          "O seu cadastro não está ativo, favor aguarde!"
+        );
+        return response.redirect("back");
+      }
     } catch (error) {
       session.flash(
         "notification",
@@ -58,5 +73,11 @@ export default class AuthController {
       );
       return response.redirect("back");
     }
+  }
+
+  public async logout({ auth, response }: HttpContextContract) {
+    await auth.logout();
+
+    return response.redirect("/login");
   }
 }

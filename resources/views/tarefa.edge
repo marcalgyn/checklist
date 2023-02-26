@@ -83,38 +83,38 @@
                   <div class="field">
                     <div id="file-abertura" class="file is-warning">
                       <label class="file-label">
-                        <input class="file-input" type="file" name="urlOrigem" required>
+                        <input class="file-input" type="file" name="urlOrigem">
                         <span class="file-cta">
                           <span class="file-icon">
                             <i class="fas fa-upload"></i>
                           </span>
                           <span class="file-label">
-                            Abertura
+                            Imagem de Abertura
                           </span>
                         </span>
-                        <figure class="image ml-2" style="width: 192px;">
-                          <img id="output">
-                        </figure>
                       </label>
                     </div>
+                    <figure class="image mt-2" style="width: 256px;">
+                      <img id="output">
+                    </figure>
                   </div>
                   <div class="field">
                     <div id="file-concluido" class="file is-primary">
                       <label class="file-label">
-                        <input class="file-input" type="file" name="urlFinal" required>
+                        <input class="file-input" type="file" name="urlFinal">
                         <span class="file-cta">
                           <span class="file-icon">
                             <i class="fas fa-upload"></i>
                           </span>
                           <span class="file-label">
-                            Concluído
+                            Imagem de Conclusão
                           </span>
                         </span>
-                        <figure class="image ml-2" style="width: 192px;">
-                          <img id="output2">
-                        </figure>
                       </label>
                     </div>
+                    <figure class="image mt-2" style="width: 256px;">
+                      <img id="output2">
+                    </figure>
                   </div>
                 </div>
               </div>
@@ -142,9 +142,9 @@
                 <div class="box">
                   <div class="control">
                     <label class="radio">
-                      <input type="radio" name="statusTarefa" value="EmAndamento" {{
-                        objTarefa.statusTarefa==='EmAndamento' ? 'checked' : '' }}>
-                      Em Execução
+                      <input type="radio" name="statusTarefa" value="Novo" {{ objTarefa.statusTarefa==='Novo'
+                        ? 'checked' : '' }}>
+                      Novo
                     </label><br>
                     <label class="radio">
                       <input type="radio" name="statusTarefa" value="Completo" {{ objTarefa.statusTarefa==='Completo'
