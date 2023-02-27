@@ -3,6 +3,7 @@ import { schema } from "@ioc:Adonis/Core/Validator";
 import Empresa from "App/Models/Empresa";
 import Pessoa from "App/Models/Pessoa";
 import Tarefa from "App/Models/Tarefa";
+import { DateTime } from "luxon";
 
 export default class TarefaController {
   public async index({ view }: HttpContextContract) {
@@ -13,15 +14,15 @@ export default class TarefaController {
 
     const objTarefa = {
       id: 0,
-      empOrigem: "",
-      usuOrigem: "",
-      empDestino: "",
-      usuDestino: "",
-      dataOrigem: new Date(),
-      dataPrevisao: new Date(),
-      dataConclusao: new Date(),
+      empOrigem: 0,
+      usuOrigem: 0,
+      empDestino: 0,
+      usuDestino: 0,
+      dataOrigem: DateTime.now(),
+      dataPrevisao: DateTime.now(),
+      dataConclusao: null,
       descricao: "",
-      prioridade: 1,
+      prioridade: 2,
       statusTarefa: "Novo",
       urlOrigem: "",
       urlFinal: "",
@@ -31,13 +32,18 @@ export default class TarefaController {
   }
 
   public async edit({ view, params }: HttpContextContract) {
-    const objTarefa = await Tarefa.findOrFail(params.id);
-    console.log("Tarefa", objTarefa.$attributes);
+    const empresas = await Empresa.all();
+    const pessoas = await Pessoa.query()
+      .where({ ativo: true, desligado: false })
+      .orderBy("name");
 
-    return view.render("tarefa", { objTarefa });
+    const objTarefa = await Tarefa.findOrFail(params.id);
+
+    return view.render("tarefa", { objTarefa, empresas, pessoas });
   }
 
   public async create({ request, response, session }: HttpContextContract) {
+    console.log("data conclusao", request.input("dataConclusao"));
     try {
       const validationSchema = schema.create({
         prioridade: schema.number(),
@@ -52,24 +58,65 @@ export default class TarefaController {
       });
 
       const validateData = await request.validate({ schema: validationSchema });
-      console.log("ValidateData", validateData);
 
       if (request.input("id") === "0") {
-        await Tarefa.create(validateData);
+        this.convertStrToDateTime(
+          request.input("dataOrigem"),
+          request.input("horaOrigem")
+        );
+        await Tarefa.create({
+          prioridade: validateData.prioridade,
+          empOrigem: validateData.empOrigem,
+          empDestino: validateData.empDestino,
+          usuOrigem: validateData.usuOrigem,
+          usuDestino: validateData.usuDestino,
+          descricao: validateData.descricao,
+          dataOrigem: this.convertStrToDateTime(
+            request.input("dataOrigem"),
+            request.input("horaOrigem")
+          ),
+          dataPrevisao: this.convertStrToDateTime(
+            request.input("dataPrevisao"),
+            request.input("horaPrevisao")
+          ),
+          statusTarefa: validateData.statusTarefa,
+          urlOrigem: request.input("urlOrigem"),
+          urlFinal: request.input("urlFinal"),
+          dataConclusao:
+            request.input("dataConclusao") !== null
+              ? this.convertStrToDateTime(
+                  request.input("dataConclusao"),
+                  request.input("horaConclusao")
+                )
+              : null,
+        });
         session.flash("notification", "Tarefa adicionada com sucesso!");
       } else {
         const tarefa = await Tarefa.findOrFail(request.input("id"));
+        tarefa.prioridade = request.input("prioridade");
         tarefa.empOrigem = request.input("empOrigem");
         tarefa.usuOrigem = request.input("usuDestino");
         tarefa.empDestino = request.input("empDestino");
         tarefa.usuDestino = request.input("usuDestino");
         tarefa.descricao = request.input("descricao");
+        tarefa.dataOrigem = this.convertStrToDateTime(
+          request.input("dataOrigem"),
+          request.input("horaOrigem")
+        );
+        tarefa.dataPrevisao = this.convertStrToDateTime(
+          request.input("dataPrevisao"),
+          request.input("horaPrevisao")
+        );
+        tarefa.dataConclusao =
+          request.input("dataConclusao") !== null
+            ? this.convertStrToDateTime(
+                request.input("dataConclusao"),
+                request.input("horaConclusao")
+              )
+            : null;
+        tarefa.statusTarefa = request.input("statusTarefa");
         tarefa.urlOrigem = request.input("urlOrigem");
         tarefa.urlFinal = request.input("urlFinal");
-        tarefa.dataOrigem = request.input("dataOrigem");
-        tarefa.dataPrevisao = request.input("dataPrevisao");
-        tarefa.dataConclusao = request.input("dataConclusao");
-        tarefa.statusTarefa = request.input("statusTarefa");
 
         await tarefa.save();
 
@@ -87,4 +134,15 @@ export default class TarefaController {
   }
 
   public async delete({}: HttpContextContract) {}
+
+  /**
+   * Retorna um DateTime Luxon
+   */
+  public convertStrToDateTime(dataInput: string, horaInput: string): any {
+    const dataLuxon = DateTime.fromISO(
+      dataInput.concat("T").concat(horaInput).concat(":00.000")
+    );
+
+    return dataLuxon;
+  }
 }

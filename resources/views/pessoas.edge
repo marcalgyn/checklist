@@ -121,25 +121,25 @@
         <table class="table is-fullwidth is-striped is-hoverable">
           <thead>
             <tr>
-              <th>ID</th>
+              <th class="is-hidden-mobile">ID</th>
               <th>Nome</th>
-              <th class="has-text-centered">Telefone</th>
-              <th class="has-text-centered">Cargo</th>
+              <th class="has-text-centered is-hidden-mobile">Telefone</th>
+              <th class="has-text-centered is-hidden-mobile">Cargo</th>
               <th class="has-text-centered">Ativo</th>
-              <th class="has-text-centered">Desligado</th>
+              <th class="has-text-centered is-hidden-mobile">Desligado</th>
               <th class="has-text-centered">Ações</th>
             </tr>
           </thead>
           <tbody>
             @each(pessoa in pessoas)
             <tr>
-              <td>{{ pessoa.id }}</td>
+              <td class="is-hidden-mobile">{{ pessoa.id }}</td>
               <td>{{ pessoa.name }}</td>
-              <td class="has-text-centered">{{ pessoa.telefone !== null ? pessoa.telefone : '' }}</td>
-              <td class="has-text-centered">{{ pessoa.cargo === 1 ? 'Diretor' : pessoa.cargo === 2 ? 'Gerente' :
+              <td class="has-text-centered is-hidden-mobile">{{ pessoa.telefone !== null ? pessoa.telefone : '' }}</td>
+              <td class="has-text-centered is-hidden-mobile">{{ pessoa.cargo === 1 ? 'Diretor' : pessoa.cargo === 2 ? 'Gerente' :
                 'Encarregado'}}</td>
               <td class="has-text-centered">{{ pessoa.ativo === 1 ? 'Sim' : 'Não'}}</td>
-              <td class="has-text-centered">{{ pessoa.desligado === 1 ? 'Sim' : 'Não'}}</td>
+              <td class="has-text-centered is-hidden-mobile">{{ pessoa.desligado === 1 ? 'Sim' : 'Não'}}</td>
               <td class="has-text-centered">
                 <form action="{{ `/pessoas/${pessoa.id}?_method=DELETE` }}" method="post">
                   {{ csrfField() }}
