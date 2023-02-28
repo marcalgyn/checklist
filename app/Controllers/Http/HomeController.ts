@@ -15,7 +15,7 @@ export default class HomeController {
     const limit = 5;
 
     const tarefas = await Tarefa.query()
-      .join("empresas", "empresas.id", "=", "tarefas.emp_origem")
+      .join("empresas", "empresas.id", "=", "tarefas.emp_destino")
       .join("pessoas", "pessoas.id", "=", "tarefas.usu_destino")
       .select("tarefas.*")
       .select("empresas.razao_social")
