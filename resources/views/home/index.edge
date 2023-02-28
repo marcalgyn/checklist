@@ -9,11 +9,11 @@
       {{ flashMessages.get('notificationActivate') }}
     </div>
     @endif
-    @if ((addPessoas.length !== 0) && (auth.user.cargo === 1 || auth.user.cargo === 2))
+    @if(addPessoas.length !== 0)
     <div class="box">
       <header class="card-header has-background-primary">
         <p class="title is-4 p-3 has-text-white">
-          Ativar Usuário no sistema Checklist
+          Ativar Pessoas no sistema Checklist
         </p>
       </header>
       <table class="table is-fullwidth is-striped is-hoverable">
@@ -23,6 +23,7 @@
               Nome
             </th>
 
+
             <th class="has-text-centered is-hidden-mobile">
               Data Cadastro
             </th>
@@ -31,6 +32,14 @@
               Cargo
             </th>
 
+            <th class="has-text-centered">
+              Ativar
+            </th>
+
+
+            <th class="has-text-centered">
+              Data Cadastro
+            </th>
             <th class="has-text-centered">
               Ativar
             </th>
@@ -212,7 +221,6 @@
                     </span>
                     <span>{{ tarefa.statusTarefa !== 'Completo' ? 'Editar' : 'Visualizar' }}</span>
                   </button>
-
                   @if(tarefa.statusTarefa !== 'Completo' )
                   <form id="formPatch" action="{{ `/tarefas/${tarefa.id}?_method=PATCH` }}" method="post">
                     {{ csrfField() }}

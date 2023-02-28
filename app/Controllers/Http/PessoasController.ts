@@ -123,7 +123,11 @@ export default class PessoasController {
     const pessoa = await Pessoa.findOrFail(params.id);
 
     pessoa.ativo = !!request.input("activated");
+<<<<<<< HEAD
     pessoa.cargo = request.input("cargo");
+=======
+
+>>>>>>> 3d25e65d0cf65f9435e9bcdad801774d99657419
     await pessoa.save();
 
     session.flash(
