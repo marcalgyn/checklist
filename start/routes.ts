@@ -28,7 +28,7 @@ Route.group(() => {
   Route.get("/", "TarefaController.index");
   Route.get("/:id", "TarefaController.edit");
   Route.post("/", "TarefaController.create");
-  Route.post("/:id", "TarefaController.update");
+  Route.patch("/:id", "TarefaController.finalize");
   Route.delete("/:id", "TarefaController.delete");
 })
   .prefix("/tarefas")

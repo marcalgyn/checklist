@@ -203,6 +203,7 @@
 
             <hr style="height:2px;border-width:0;color:gray;background-color:gray">
             <div class="field is-grouped">
+              @if(objTarefa.statusTarefa !== 'Completo')
               <div class="control">
                 <button type="submit" class="button is-link">
                   <span class="icon is-small">
@@ -211,6 +212,7 @@
                   <span>Salvar</span>
                 </button>
               </div>
+              @endif
               <div class="control">
                 <button type="button" class="button is-warning" onclick="window.location.href='{{ `/tarefas` }}'">
                   <span class="icon is-small">

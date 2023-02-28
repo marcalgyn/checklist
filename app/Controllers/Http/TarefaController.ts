@@ -42,8 +42,20 @@ export default class TarefaController {
     return view.render("tarefa", { objTarefa, empresas, pessoas });
   }
 
+  public async finalize({ response, session, params }: HttpContextContract) {
+    const tarefa = await Tarefa.findOrFail(params.id);
+
+    tarefa.statusTarefa = "Completo";
+    tarefa.dataConclusao = DateTime.now();
+
+    await tarefa.save();
+
+    session.flash("notification", "Tarefa finalizada com sucesso!!");
+
+    return response.redirect("back");
+  }
+
   public async create({ request, response, session }: HttpContextContract) {
-    console.log("data conclusao", request.input("dataConclusao"));
     try {
       const validationSchema = schema.create({
         prioridade: schema.number(),
@@ -133,7 +145,15 @@ export default class TarefaController {
     return response.redirect("back");
   }
 
-  public async delete({}: HttpContextContract) {}
+  public async delete({ response, session, params }: HttpContextContract) {
+    const tarefa = await Tarefa.findOrFail(params.id);
+
+    await tarefa.delete();
+
+    session.flash("notification", "Tarefa excluída com sucesso!");
+
+    return response.redirect("back");
+  }
 
   /**
    * Retorna um DateTime Luxon

@@ -169,10 +169,10 @@
             @each(tarefa in tarefas.rows)
             <tr>
               <td>
-                {{ tarefa.empOrigem }}
+                {{ tarefa.$extras.razao_social }}
               </td>
               <td>
-                {{ tarefa.usuDestino }}
+                {{ tarefa.$extras.name }}
               </td>
               <td class="has-text-right">
                 {{ tarefa.descricao }}
@@ -184,13 +184,38 @@
                 {{{ formatDate(tarefa.dataConclusao) }}}
               </td>
               <td class="has-text-centered">
-                <button type="button" class="button is-small is-primary"
-                  onclick="window.location.href='{{ `/tarefas/${tarefa.id}` }}'">
-                  <span class="icon is-small">
-                    <i class="fas fa-edit"></i>
-                  </span>
-                  <span>Editar</span>
-                </button>
+                <div class="buttons">
+                  <button type="button"
+                    class="button is-small {{ tarefa.statusTarefa !== 'Completo' ? 'is-primary' : 'is-warning' }}"
+                    onclick="window.location.href='{{ `/tarefas/${tarefa.id}` }}'">
+                    <span class="icon is-small">
+                      <i class="fas fa-edit"></i>
+                    </span>
+                    <span>{{ tarefa.statusTarefa !== 'Completo' ? 'Editar' : 'Visualizar' }}</span>
+                  </button>
+                  @if(tarefa.statusTarefa !== 'Completo' )
+                  <form id="formPatch" action="{{ `/tarefas/${tarefa.id}?_method=PATCH` }}" method="post">
+                    {{ csrfField() }}
+                    <button type="submit" class="button is-small is-info">
+                      <span class="icon is-small">
+                        <i class="fas fa-hourglass-end"></i>
+                      </span>
+                      <span>Finalizar</span>
+                    </button>
+                  </form>
+                  @endif
+                  @if((auth.user.cargo === 1 || auth.user.cargo === 2) && tarefa.statusTarefa !== 'Completo' )
+                  <form id="formDelete" action="{{ `/tarefas/${tarefa.id}?_method=DELETE` }}" method="post">
+                    {{ csrfField() }}
+                    <button type="submit" class="button is-small is-danger ml-2">
+                      <span class="icon is-small">
+                        <i class="fas fa-trash-alt"></i>
+                      </span>
+                      <span>Excluir</span>
+                    </button>
+                  </form>
+                  @endif
+                </div>
               </td>
             </tr>
             @else

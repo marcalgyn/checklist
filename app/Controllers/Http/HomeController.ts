@@ -6,26 +6,28 @@ import Tarefa from "App/Models/Tarefa";
 export default class HomeController {
   public async index({ request, view }: HttpContextContract) {
     const empresas = await Empresa.all();
+
     const pessoas = await Pessoa.query()
       .where({ ativo: true, desligado: false })
       .orderBy("name");
 
     const page = request.input("page", 1);
-    const limit = 2;
+    const limit = 5;
 
     const tarefas = await Tarefa.query()
+      .join("empresas", "empresas.id", "=", "tarefas.emp_origem")
+      .join("pessoas", "pessoas.id", "=", "tarefas.usu_destino")
+      .select("tarefas.*")
+      .select("empresas.razao_social")
+      .select("pessoas.name")
       .orderBy("dataOrigem", "desc")
       .paginate(page, limit);
-
-    console.log("Tarefas", tarefas);
 
     const addPessoas = await Pessoa.query()
       .where({ ativo: false, desligado: false })
       .orderBy("name");
 
     tarefas.baseUrl("/home");
-
-    console.log("Tarefas", tarefas);
 
     return view.render("home/index", {
       tarefas,
