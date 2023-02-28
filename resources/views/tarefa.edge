@@ -55,7 +55,8 @@
                       <select name="empDestino" required>
                         <option value="">Selecione uma Empresa</option>
                         @each(empresa in empresas)
-                        <option value="{{ empresa.id }}">{{ empresa.razaoSocial }}</option>
+                        <option value="{{ empresa.id }}" {{empresa.id===objTarefa.empDestino ? 'selected' : '' }}>{{
+                          empresa.razaoSocial }}</option>
                         @endeach
                       </select>
                     </div>
@@ -66,7 +67,8 @@
                       <select name="usuDestino" required>
                         <option value="">Selecione um Responsável</option>
                         @each(pessoa in pessoas)
-                        <option value="{{ pessoa.id }}">{{ pessoa.name }}</option>
+                        <option value="{{ pessoa.id }}" {{pessoa.id===objTarefa.usuDestino ? 'selected' : '' }}>{{
+                          pessoa.name }}</option>
                         @endeach
                       </select>
                     </div>
@@ -76,75 +78,108 @@
                 <div class="field">
                   <label class="label">Descrição da Tarefa</label>
                   <div class="control is-expanded">
-                    <textarea class="textarea" name="descricao" placeholder="Detalhes..."></textarea>
+                    <textarea class="textarea" name="descricao"
+                      placeholder="Detalhes...">{{objTarefa.descricao}}</textarea>
                   </div>
                 </div>
                 <div class="field-body">
                   <div class="field">
                     <div id="file-abertura" class="file is-warning">
                       <label class="file-label">
-                        <input class="file-input" type="file" name="urlOrigem" required>
+                        <input class="file-input" type="file" name="urlOrigem">
                         <span class="file-cta">
                           <span class="file-icon">
                             <i class="fas fa-upload"></i>
                           </span>
                           <span class="file-label">
-                            Abertura
+                            Imagem de Abertura
                           </span>
                         </span>
-                        <figure class="image ml-2" style="width: 192px;">
-                          <img id="output">
-                        </figure>
                       </label>
                     </div>
+                    <figure class="image mt-2" style="width: 256px;">
+                      <img id="output">
+                    </figure>
                   </div>
                   <div class="field">
                     <div id="file-concluido" class="file is-primary">
                       <label class="file-label">
-                        <input class="file-input" type="file" name="urlFinal" required>
+                        <input class="file-input" type="file" name="urlFinal">
                         <span class="file-cta">
                           <span class="file-icon">
                             <i class="fas fa-upload"></i>
                           </span>
                           <span class="file-label">
-                            Concluído
+                            Imagem de Conclusão
                           </span>
                         </span>
-                        <figure class="image ml-2" style="width: 192px;">
-                          <img id="output2">
-                        </figure>
                       </label>
                     </div>
+                    <figure class="image mt-2" style="width: 256px;">
+                      <img id="output2">
+                    </figure>
                   </div>
                 </div>
               </div>
               <div class="column">
-                <div class="field">
-                  <label class="label">Data Registro</label>
-                  <div class="control is-expanded">
-                    <input type="date" name="dataOrigem" class="input" required>
+                <div class="field-body">
+                  <div class="field">
+                    <label class="label">Data Registro</label>
+                    <div class="control is-expanded">
+                      <input type="date" name="dataOrigem" class="input"
+                        value="{{ objTarefa.dataOrigem !== null ? objTarefa.dataOrigem.toFormat('yyyy-MM-dd') : '' }}"
+                        required>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label class="label">Hora Registro</label>
+                    <div class="control is-expanded">
+                      <input type="time" name="horaOrigem" class="input"
+                        value="{{ objTarefa.dataOrigem !== null ? objTarefa.dataOrigem.toFormat('HH:mm') : '' }}"
+                        required>
+                    </div>
                   </div>
                 </div>
-                <div class="field">
-                  <label class="label">Data Previsão</label>
-                  <div class="control is-expanded">
-                    <input type="date" name="dataPrevisao" class="input" required>
+                <div class="field-body mt-2">
+                  <div class="field">
+                    <label class="label">Data Previsão</label>
+                    <div class="control is-expanded">
+                      <input type="date" name="dataPrevisao" class="input"
+                        value="{{ objTarefa.dataPrevisao !== null ? objTarefa.dataPrevisao.toFormat('yyyy-MM-dd') : '' }}">
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label class="label">Hora Previsão</label>
+                    <div class="control is-expanded">
+                      <input type="time" name="horaPrevisao" class="input"
+                        value="{{ objTarefa.dataPrevisao !== null ? objTarefa.dataPrevisao.toFormat('HH:mm') : '' }}">
+                    </div>
                   </div>
                 </div>
-                <div class="field">
-                  <label class="label">Data Conclusão</label>
-                  <div class="control is-expanded">
-                    <input type="date" name="dataConclusao" class="input">
+                <div class="field-body mt-2">
+                  <div class="field">
+                    <label class="label">Data Conclusão</label>
+                    <div class="control is-expanded">
+                      <input type="date" name="dataConclusao" class="input"
+                        value="{{ objTarefa.dataConclusao !== null ? objTarefa.dataConclusao.toFormat('yyyy-MM-dd') : '' }}">
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label class="label">Hora Conclusão</label>
+                    <div class="control is-expanded">
+                      <input type="time" name="horaConclusao" class="input"
+                        value="{{ objTarefa.dataConclusao !== null ? objTarefa.dataConclusao.toFormat('HH:mm') : '' }}">
+                    </div>
                   </div>
                 </div>
 
-                <label class="label">Concluído?</label>
+                <label class="label mt-2">Concluído?</label>
                 <div class="box">
                   <div class="control">
                     <label class="radio">
-                      <input type="radio" name="statusTarefa" value="EmAndamento" {{
-                        objTarefa.statusTarefa==='EmAndamento' ? 'checked' : '' }}>
-                      Em Execução
+                      <input type="radio" name="statusTarefa" value="Novo" {{ objTarefa.statusTarefa==='Novo'
+                        ? 'checked' : '' }}>
+                      Novo
                     </label><br>
                     <label class="radio">
                       <input type="radio" name="statusTarefa" value="Completo" {{ objTarefa.statusTarefa==='Completo'
@@ -168,6 +203,7 @@
 
             <hr style="height:2px;border-width:0;color:gray;background-color:gray">
             <div class="field is-grouped">
+              @if(objTarefa.statusTarefa !== 'Completo')
               <div class="control">
                 <button type="submit" class="button is-link">
                   <span class="icon is-small">
@@ -176,6 +212,7 @@
                   <span>Salvar</span>
                 </button>
               </div>
+              @endif
               <div class="control">
                 <button type="button" class="button is-warning" onclick="window.location.href='{{ `/tarefas` }}'">
                   <span class="icon is-small">
@@ -227,5 +264,20 @@
     }
   }
   /***** Fim do Script de conclusão da tarefa *************************/
+
+  window.onload = function loadDate() {
+    let date = new Date(),
+      day = date.getDate(),
+      month = date.getMonth() + 1,
+      year = date.getFullYear();
+
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    const todayDate = `${year}-${month}-${day}`;
+
+    document.getElementById("dateRegistro").defaultValue = todayDate;
+  };
+
 </script>
 @endsection

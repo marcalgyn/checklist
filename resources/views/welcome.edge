@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AdonisJS - A fully featured web framework for Node.js</title>
+  <title>Checklist Sistemas</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
   <link href="https://fonts.googleapis.com/css?family=Poppins:400,500&display=swap" rel="stylesheet">
   <script src="https://kit.fontawesome.com/df8857688b.js" crossorigin="anonymous"></script>
   <style>
-    html, body {
+    html,
+    body {
       background-color: #F7F8FA;
       font-family: 'Poppins', sans-serif;
       height: 100vh;
@@ -83,29 +86,26 @@
     }
   </style>
 </head>
+
 <body>
 
   <main>
     <div>
-      <h1 class="title"> It Works! </h1>
+      <h1 class="title"> Seja Benvindo(a)! </h1>
       <p class="subtitle">
-        Congratulations, you have just created your first AdonisJS app.
+        Você acaba de fazer o seu cadastro no sistema Checklist. Favor aguarde a validação do seu cadastro para ter
+        acesso ao sistema.
       </p>
-
-      <ul>
-        <li>
-          The route for this page is defined inside <code>start/routes.ts</code> file
-        </li>
-
-        <li>
-          You can update this page by editing <code>resources/views/welcome.edge</code> file
-        </li>
-
-        <li>
-          If you run into problems, you can reach us on <a href="https://discord.gg/vDcEjq6?">Discord</a> or the <a href="https://forum.adonisjs.com/">Forum</a>.
-        </li>
-      </ul>
+      <p>
+        <button type="button" class="button is-link" onclick="window.location.href='{{ `/login` }}'">
+          <span class="icon is-small">
+            <i class="fa fa-backward"></i>
+          </span>
+          <span>Voltar</span>
+        </button>
+      </p>
     </div>
   </main>
 </body>
+
 </html>

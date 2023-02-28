@@ -3,7 +3,7 @@ import { rules, schema } from "@ioc:Adonis/Core/Validator";
 import Pessoa from "App/Models/Pessoa";
 
 export default class PessoasController {
-  public async index({ view }: HttpContextContract) {
+  public async index({ request, view }: HttpContextContract) {
     const objPessoa = {
       id: 0,
       name: "",
@@ -13,14 +13,33 @@ export default class PessoasController {
       ativo: 0,
       password: "",
     };
-    const pessoas = await Pessoa.query().orderBy("name", "asc");
+
+    const page = request.input("page", 1);
+    const limit = 2;
+
+    const pessoas = await Pessoa.query()
+      .orderBy("name", "asc")
+      .paginate(page, limit);
+
+    pessoas.baseUrl("/pessoas");
 
     return view.render("pessoas", { objPessoa, pessoas });
   }
 
-  public async edit({ view, params }: HttpContextContract) {
+  public async edit({ view, params, request }: HttpContextContract) {
     const objPessoa = await Pessoa.findOrFail(params.id);
-    const pessoas = await Pessoa.query().orderBy("id", "asc");
+
+    const page = request.input("page", 1);
+    const limit = 2;
+
+    const pessoas = await Pessoa.query()
+      .orderBy("name", "asc")
+      .paginate(page, limit);
+
+    pessoas.baseUrl("/pessoas");
+
+    objPessoa.telefone === null ? (objPessoa.telefone = "") : null;
+    objPessoa.password = "";
 
     return view.render("pessoas", { objPessoa, pessoas });
   }
@@ -39,7 +58,6 @@ export default class PessoasController {
           cargo: schema.string(),
           password: schema.string({ trim: true }, [rules.confirmed()]),
         });
-        console.log("validationSchema Pessoa", validationSchema);
 
         const validateData = await request.validate({
           schema: validationSchema,
@@ -92,6 +110,26 @@ export default class PessoasController {
     await pessoa.delete();
 
     session.flash("notification", "Pessoa excluída com sucesso!");
+
+    return response.redirect("back");
+  }
+
+  public async activate({
+    request,
+    response,
+    session,
+    params,
+  }: HttpContextContract) {
+    const pessoa = await Pessoa.findOrFail(params.id);
+
+    pessoa.ativo = !!request.input("activated");
+    pessoa.cargo = request.input("cargo");
+    await pessoa.save();
+
+    session.flash(
+      "notificationActivate",
+      `${pessoa.name}, agora tem acesso ao sistema Checklist.`
+    );
 
     return response.redirect("back");
   }

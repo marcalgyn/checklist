@@ -3,6 +3,77 @@
 @section('content')
 <div class="columns">
   <div class="column is-full">
+    @if(flashMessages.has('notificationActivate'))
+    <div class="notification is-success is-light">
+      <button class="delete"></button>
+      {{ flashMessages.get('notificationActivate') }}
+    </div>
+    @endif
+    @if ((addPessoas.length !== 0) && (auth.user.cargo === 1 || auth.user.cargo === 2))
+    <div class="box">
+      <header class="card-header has-background-primary">
+        <p class="title is-4 p-3 has-text-white">
+          Ativar Usuário no sistema Checklist
+        </p>
+      </header>
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th>
+              Nome
+            </th>
+
+            <th class="has-text-centered is-hidden-mobile">
+              Data Cadastro
+            </th>
+
+            <th >
+              Cargo
+            </th>
+
+            <th class="has-text-centered">
+              Ativar
+            </th>
+
+          </tr>
+        </thead>
+        <tbody>
+          @each(pessoa in addPessoas)
+          <tr>
+            <td>
+              {{ pessoa.name }}
+            </td>
+            <td class="has-text-centered is-hidden-mobile">
+              {{{ formatDateTime(pessoa.createdAt) }}}
+            </td>
+
+             <form action="{{ `/pessoas/${pessoa.id}?_method=PATCH` }}" method="post">
+                {{ csrfField() }}
+                <td>
+                    <div class="select is-expanded">
+                      <select id="cargo" name="cargo" required>
+                        <option value="0" {{ pessoa.cargo===0 ? 'selected' : '' }}> Cargo </option>
+                        <option value="1" {{ pessoa.cargo===1 ? 'selected' : '' }}> Diretor </option>
+                        <option value="2" {{ pessoa.cargo===2 ? 'selected' : '' }}> Gerente </option>
+                        <option value="3" {{ pessoa.cargo===3 ? 'selected' : '' }}> Encarregado </option>
+                      </select>
+                    </div>
+                </td>
+
+                <td class="has-text-centered">
+                  <label for="completed" class="checkbox">
+                    <input type="checkbox" name="activated" onchange="this.form.submit()" {{ pessoa.ativo ? 'checked' : ''
+                      }}>
+                  </label>
+                </td>
+              </form>
+
+          </tr>
+          @endeach
+        </tbody>
+      </table>
+    </div>
+    @endif
     <div class="box">
       <form action="/tarefas/findBy" method="post">
         {{ csrfField() }}
@@ -17,15 +88,24 @@
             <div class="field-body">
               <div class="field">
                 <label class="label">Empresa</label>
-                <div class="control is-expanded">
-                  <input id="cnpj" type="text" name="cnpjEmitente" class="input"
-                    placeholder="Buscar pelo nome da Empresa" value="{{ cnpjEmitente }}" required>
+                <div class="select is-fullwidth">
+                  <select name="empDestino" required>
+                    <option value="">Selecione uma Empresa</option>
+                    @each(empresa in empresas)
+                    <option value="{{ empresa.id }}">{{ empresa.razaoSocial }}</option>
+                    @endeach
+                  </select>
                 </div>
               </div>
               <div class="field">
                 <label class="label">Responsável</label>
-                <div class="control is-expanded">
-                  <input type="text" name="empDestino" class="input" placeholder="Buscar pelo nome do responsavel">
+                <div class="select is-fullwidth">
+                  <select name="usuDestino" required>
+                    <option value="">Selecione um Responsável</option>
+                    @each(pessoa in pessoas)
+                    <option value="{{ pessoa.id }}">{{ pessoa.name }}</option>
+                    @endeach
+                  </select>
                 </div>
               </div>
               <div class="field">
@@ -38,6 +118,18 @@
                 <label class="label">Data Conclusão</label>
                 <div class="control is-expanded">
                   <input type="date" name="dataConclusao" class="input" placeholder="Digite a Data de Conclusão">
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Status da Tarefa</label>
+                <div class="select is-fullwidth">
+                  <select name="usuDestino" required>
+                    <option value="">Selecione um Status</option>
+                    <option value="Novo">Novo</option>
+                    <option value="Completo">Completo</option>
+                    <option value="Parcial">Parcial</option>
+                    <option value="Cancelado">Cancelado</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -75,16 +167,16 @@
               <th>
                 Empresa
               </th>
-              <th>
+              <th class="is-hidden-mobile">
                 Responsável
               </th>
               <th class="has-text-centered">
                 Tarefa
               </th>
-              <th class="has-text-centered">
+              <th class="has-text-centered is-hidden-mobile">
                 Status
               </th>
-              <th class="has-text-centered">
+              <th class="has-text-centered is-hidden-mobile">
                 Data Conclusão
               </th>
               <th class="has-text-centered">
@@ -96,28 +188,54 @@
             @each(tarefa in tarefas.rows)
             <tr>
               <td>
-                {{ tarefa.empDestino }}
+                {{ tarefa.$extras.razao_social }}
               </td>
-              <td>
-                {{ tarefa.usuDestino }}
+              <td class="is-hidden-mobile">
+                {{ tarefa.$extras.name }}
               </td>
               <td class="has-text-right">
                 {{ tarefa.descricao }}
               </td>
-              <td class="has-text-centered">
+              <td class="has-text-centered is-hidden-mobile">
                 {{ tarefa.statusTarefa }}
               </td>
-              <td class="has-text-centered">
+              <td class="has-text-centered is-hidden-mobile">
                 {{{ formatDate(tarefa.dataConclusao) }}}
               </td>
               <td class="has-text-centered">
-                <button type="button" class="button is-small is-primary"
-                  onclick="window.location.href='{{ `/tarefas/${tarefa.id}` }}'">
-                  <span class="icon is-small">
-                    <i class="fas fa-edit"></i>
-                  </span>
-                  <span>Editar</span>
-                </button>
+                <div class="buttons">
+                  <button type="button"
+                    class="button is-small {{ tarefa.statusTarefa !== 'Completo' ? 'is-primary' : 'is-warning' }}"
+                    onclick="window.location.href='{{ `/tarefas/${tarefa.id}` }}'">
+                    <span class="icon is-small">
+                      <i class="fas fa-edit"></i>
+                    </span>
+                    <span>{{ tarefa.statusTarefa !== 'Completo' ? 'Editar' : 'Visualizar' }}</span>
+                  </button>
+
+                  @if(tarefa.statusTarefa !== 'Completo' )
+                  <form id="formPatch" action="{{ `/tarefas/${tarefa.id}?_method=PATCH` }}" method="post">
+                    {{ csrfField() }}
+                    <button type="submit" class="button is-small is-info">
+                      <span class="icon is-small">
+                        <i class="fas fa-hourglass-end"></i>
+                      </span>
+                      <span>Finalizar</span>
+                    </button>
+                  </form>
+                  @endif
+                  @if((auth.user.cargo === 1 || auth.user.cargo === 2) && tarefa.statusTarefa !== 'Completo' )
+                  <form id="formDelete" action="{{ `/tarefas/${tarefa.id}?_method=DELETE` }}" method="post">
+                    {{ csrfField() }}
+                    <button type="submit" class="button is-small is-danger ml-2">
+                      <span class="icon is-small">
+                        <i class="fas fa-trash-alt"></i>
+                      </span>
+                      <span>Excluir</span>
+                    </button>
+                  </form>
+                  @endif
+                </div>
               </td>
             </tr>
             @else

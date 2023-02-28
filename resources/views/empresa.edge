@@ -104,22 +104,22 @@
           <table class="table is-fullwidth is-striped is-hoverable">
             <thead>
               <tr>
-                 <div class="is-hidden-mobile">
-                  <th>CNPJ</th>
+                 <div>
+                  <th class="is-hidden-mobile">CNPJ</th>
                 </div>
                 <th>Razão Social</th>
-                <th>e-mail</th>
+                <th class="is-hidden-mobile">e-mail</th>
                 <th class="has-text-centered">Ações</th>
               </tr>
             </thead>
             <tbody>
               @each(empresa in empresas)
               <tr>
-                <div class="is-hidden-mobile">
-                  <td>{{ empresa.cnpj }}</td>
+                <div>
+                  <td class="is-hidden-mobile">{{ empresa.cnpj }}</td>
                 </div>
                 <td>{{ empresa.razaoSocial }}</td>
-                <td>{{ empresa.email }}</td>
+                <td class="is-hidden-mobile">{{ empresa.email }}</td>
                 <td class="has-text-centered">
                   <form action="{{ `/empresas/${empresa.id}?_method=DELETE` }}" method="post">
                     {{ csrfField() }}

@@ -28,6 +28,9 @@ export default class Pessoa extends BaseModel {
   @column()
   public ativo: boolean;
 
+  @column()
+  public desligado: boolean;
+
   @column({ serializeAs: null })
   public password: string;
 
