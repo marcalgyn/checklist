@@ -3,7 +3,21 @@ import { DateTime } from "luxon";
 
 View.global("formatDate", function (date: DateTime) {
   if (date) {
-    return date.toLocaleString(DateTime.DATE_SHORT);
+    return date.toLocaleString();
+  } else {
+    return "";
+  }
+});
+
+View.global("formatDateTime", function (date: DateTime) {
+  if (date) {
+    return date.toLocaleString({
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   } else {
     return "";
   }

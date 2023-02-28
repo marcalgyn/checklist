@@ -18,8 +18,8 @@
             <div class="field">
               <label class="label"> Nome</label>
               <div class="control is-expanded">
-                <input id="name" type="text" name="name" class="input" placeholder="Nome da Pessoa"
-                  value="{{ objPessoa.name }}" required>
+                <input type="text" name="name" class="input {{ flashMessages.has('errors.name') ? 'is-danger' : '' }}"
+                  placeholder="Nome da Pessoa" value="{{ objPessoa.name }}">
               </div>
             </div>
             <div class="field">
@@ -39,9 +39,8 @@
             <div class="field">
               <label class="label">Senha</label>
               <div class="control">
-                <input id="password" type="password"
-                  class="input {{ flashMessages.get('errors.password') ? 'is-danger' : '' }}" name="password"
-                  value={{objPessoa.password}}>
+                <input type="password" class="input {{ flashMessages.get('errors.password') ? 'is-danger' : '' }}"
+                  name="password">
               </div>
 
               @if(flashMessages.has('errors.password'))
@@ -63,9 +62,9 @@
               </p>
               @endif
             </div>
-            <div class="field-body">
+            <div class="field-body is-align-items-center">
               <div class="field is-horizontal">
-                <label class="label" style="margin-right: 5px;">Cargo: </label>
+                <label class="label is-align-self-center mr-3">Cargo: </label>
                 <div class="select is-expanded">
                   <select id="cargo" name="cargo" required>
                     <option value="0" {{ objPessoa.cargo===0 ? 'selected' : '' }}> Selecione um Cargo </option>
@@ -78,7 +77,13 @@
               <div class="field">
                 <label for="ativo" class="checkbox">
                   <input type="checkbox" name="ativo" {{ objPessoa.ativo ? 'checked' : '' }}>
-                  <strong> Ativo? </strong>
+                  <strong> Ativo(a)? </strong>
+                </label>
+              </div>
+              <div class="field">
+                <label for="desligado" class="checkbox">
+                  <input type="checkbox" name="desligado" {{ objPessoa.desligado ? 'checked' : '' }}>
+                  <strong> Desligado(a)? </strong>
                 </label>
               </div>
             </div>
@@ -105,34 +110,39 @@
         </div>
       </form>
 
+
       @if(flashMessages.has('notification'))
-      <div class="notification is-success is-light">
-        <button class="delete"></button>
-        {{ flashMessages.get('notification') }}
-      </div>
+
+            <div class="notification is-success is-light">
+              <button class="delete"></button>
+              {{ flashMessages.get('notification') }}
+            </div>
+
       @endif
 
       <div class="box">
         <table class="table is-fullwidth is-striped is-hoverable">
           <thead>
             <tr>
-              <th>ID</th>
+              <th class="is-hidden-mobile">ID</th>
               <th>Nome</th>
-              <th class="has-text-centered">Telefone</th>
-              <th class="has-text-centered">Cargo</th>
+              <th class="has-text-centered is-hidden-mobile">Telefone</th>
+              <th class="has-text-centered is-hidden-mobile">Cargo</th>
               <th class="has-text-centered">Ativo</th>
+              <th class="has-text-centered is-hidden-mobile">Desligado</th>
               <th class="has-text-centered">Ações</th>
             </tr>
           </thead>
           <tbody>
             @each(pessoa in pessoas)
             <tr>
-              <td>{{ pessoa.id }}</td>
+              <td class="is-hidden-mobile">{{ pessoa.id }}</td>
               <td>{{ pessoa.name }}</td>
-              <td class="has-text-centered">{{ pessoa.telefone }}</td>
-              <td class="has-text-centered">{{ pessoa.cargo === 1 ? 'Diretor' : pessoa.cargo === 2 ? 'Gerente' :
+              <td class="has-text-centered is-hidden-mobile">{{ pessoa.telefone !== null ? pessoa.telefone : '' }}</td>
+              <td class="has-text-centered is-hidden-mobile">{{ pessoa.cargo === 1 ? 'Diretor' : pessoa.cargo === 2 ? 'Gerente' :
                 'Encarregado'}}</td>
               <td class="has-text-centered">{{ pessoa.ativo === 1 ? 'Sim' : 'Não'}}</td>
+              <td class="has-text-centered is-hidden-mobile">{{ pessoa.desligado === 1 ? 'Sim' : 'Não'}}</td>
               <td class="has-text-centered">
                 <form action="{{ `/pessoas/${pessoa.id}?_method=DELETE` }}" method="post">
                   {{ csrfField() }}
@@ -143,18 +153,22 @@
                     </span>
                     <span>Editar</span>
                   </button>
-                  <button type="submit" class="button is-small is-danger">
-                    <span class="icon is-small">
-                      <i class="fas fa-trash"></i>
-                    </span>
-                    <span>Excluir</span>
-                  </button>
+
+                  @if (auth.user.cargo === 1 )
+                      <button type="submit" class="button is-small is-danger">
+                        <span class="icon is-small">
+                          <i class="fas fa-trash"></i>
+                        </span>
+                        <span>Excluir</span>
+                      </button>
+                  @endif
                 </form>
+
               </td>
             </tr>
             @else
             <tr>
-              <td colspan="5" class="has-text-centered">Nenhum Registro Encontrado com os Dados Informados</td>
+              <td colspan="7" class="has-text-centered">Nenhum Registro Encontrado com os Dados Informados</td>
             </tr>
             @endeach
           </tbody>
@@ -163,15 +177,15 @@
       @if(pessoas.hasPages)
       <div class="box">
         <nav class="pagination" role="navigation" aria-label="pagination">
-          <a class="pagination-previous" {{ pessoa.currentPage===1 && 'disabled' }}
-            href="{{ pessoa.url }}?page={{ pessoa.currentPage - 1 }}">Anterior</a>
-          <a class="pagination-next" {{ !pessoa.hasMorePages && 'disabled' }}
-            href="{{ pessoa.url }}?page={{ pessoa.currentPage + 1 }}">Próxima</a>
+          <a class="pagination-previous" {{ pessoas.currentPage===1 && 'disabled' }}
+            href="{{ pessoas.url }}?page={{ pessoas.currentPage - 1 }}">Anterior</a>
+          <a class="pagination-next" {{ !pessoas.hasMorePages && 'disabled' }}
+            href="{{ pessoas.url }}?page={{ pessoas.currentPage + 1 }}">Próxima</a>
           <ul class="pagination-list">
-            @each(nPessoa in pessoa.getUrlsForRange(1, pessoa.lastPage))
+            @each(nPessoa in pessoas.getUrlsForRange(1, pessoas.lastPage))
             <li>
               <a class="pagination-link
-                      {{ pessoa.currentPage === nPessoa.page && 'is-current' }}" href="{{ nPessoa.url }}">
+                      {{ pessoas.currentPage === nPessoa.page && 'is-current' }}" href="{{ nPessoa.url }}">
                 {{ nPessoa.page }}
               </a>
             </li>

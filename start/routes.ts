@@ -2,6 +2,7 @@ import Route from "@ioc:Adonis/Core/Route";
 
 Route.get("/", "HomeController.index").middleware("auth");
 Route.get("/home", "HomeController.index").middleware("auth");
+Route.get("/welcome", "HomeController.welcome").middleware("guest");
 
 Route.group(() => {
   Route.get("/", "EmpresasController.index");
@@ -17,7 +18,7 @@ Route.group(() => {
   Route.get("/", "PessoasController.index");
   Route.get("/:id", "PessoasController.edit");
   Route.post("/", "PessoasController.create");
-  Route.post("/:id", "PessoasController.update");
+  Route.patch("/:id", "PessoasController.activate");
   Route.delete("/:id", "PessoasController.delete");
 })
   .prefix("/pessoas")
@@ -27,7 +28,7 @@ Route.group(() => {
   Route.get("/", "TarefaController.index");
   Route.get("/:id", "TarefaController.edit");
   Route.post("/", "TarefaController.create");
-  Route.post("/:id", "TarefaController.update");
+  Route.patch("/:id", "TarefaController.finalize");
   Route.delete("/:id", "TarefaController.delete");
 })
   .prefix("/tarefas")
