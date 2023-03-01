@@ -12,7 +12,7 @@ export default class HomeController {
       .orderBy("name");
 
     const page = request.input("page", 1);
-    const limit = 5;
+    const limit = 10;
 
     const tarefas = await Tarefa.query()
       .join("empresas", "empresas.id", "=", "tarefas.emp_destino")
@@ -20,7 +20,9 @@ export default class HomeController {
       .select("tarefas.*")
       .select("empresas.razao_social")
       .select("pessoas.name")
-      .orderBy("dataOrigem", "desc")
+      .orderBy("dataConclusao", "asc")
+      .orderBy("prioridade", "asc")
+      .orderBy("dataPrevisao", "asc")
       .paginate(page, limit);
 
     const addPessoas = await Pessoa.query()

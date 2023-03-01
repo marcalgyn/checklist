@@ -64,7 +64,7 @@ export default class TarefaController {
         empDestino: schema.number(),
         usuOrigem: schema.number(),
         usuDestino: schema.number(),
-        descricao: schema.string({ trim: true }),
+        descricao: schema.string({ trim: true }) ,
         dataOrigem: schema.date(),
         dataPrevisao: schema.date(),
         statusTarefa: schema.string({ trim: true }),
@@ -97,7 +97,7 @@ export default class TarefaController {
           empDestino: validateData.empDestino,
           usuOrigem: validateData.usuOrigem,
           usuDestino: validateData.usuDestino,
-          descricao: validateData.descricao,
+          descricao:  (validateData.descricao),
           dataOrigem: this.convertStrToDateTime(
             request.input("dataOrigem"),
             request.input("horaOrigem")
