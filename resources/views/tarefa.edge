@@ -4,7 +4,7 @@
 <div class="columns">
   <div class="column is-fullwidth">
     <div class="box">
-      <form action="/tarefas" method="post">
+      <form action="/tarefas" method="post" enctype="multipart/form-data">
         {{ csrfField() }}
         <input type="hidden" name="id" value={{ objTarefa.id }}>
         <input type="hidden" name="usuOrigem" value={{ auth.user.id }}>
@@ -86,7 +86,7 @@
                   <div class="field">
                     <div id="file-abertura" class="file is-warning">
                       <label class="file-label">
-                        <input class="file-input" type="file" name="urlOrigem">
+                        <input class="file-input" type="file" name="imagemAbertura">
                         <span class="file-cta">
                           <span class="file-icon">
                             <i class="fas fa-upload"></i>
@@ -104,7 +104,7 @@
                   <div class="field">
                     <div id="file-concluido" class="file is-primary">
                       <label class="file-label">
-                        <input class="file-input" type="file" name="urlFinal">
+                        <input class="file-input" type="file" name="imagemConclusao">
                         <span class="file-cta">
                           <span class="file-icon">
                             <i class="fas fa-upload"></i>

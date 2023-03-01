@@ -1,3 +1,4 @@
+import Application from "@ioc:Adonis/Core/Application";
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import { schema } from "@ioc:Adonis/Core/Validator";
 import Empresa from "App/Models/Empresa";
@@ -71,6 +72,20 @@ export default class TarefaController {
 
       const validateData = await request.validate({ schema: validationSchema });
 
+      let imagemAbertura: string = "";
+      let imagemConclusao: string = "";
+      const fileAbertura = request.file("imagemAbertura");
+      if (fileAbertura) {
+        imagemAbertura = fileAbertura.clientName;
+        await fileAbertura.move(Application.tmpPath("uploads"));
+      }
+
+      const fileConclusao = request.file("imagemConclusao");
+      if (fileConclusao) {
+        imagemConclusao = fileConclusao.clientName;
+        await fileConclusao.move(Application.tmpPath("uploads"));
+      }
+
       if (request.input("id") === "0") {
         this.convertStrToDateTime(
           request.input("dataOrigem"),
@@ -92,8 +107,8 @@ export default class TarefaController {
             request.input("horaPrevisao")
           ),
           statusTarefa: validateData.statusTarefa,
-          urlOrigem: request.input("urlOrigem"),
-          urlFinal: request.input("urlFinal"),
+          urlOrigem: imagemAbertura,
+          urlFinal: imagemConclusao,
           dataConclusao:
             request.input("dataConclusao") !== null
               ? this.convertStrToDateTime(
@@ -127,8 +142,8 @@ export default class TarefaController {
               )
             : null;
         tarefa.statusTarefa = request.input("statusTarefa");
-        tarefa.urlOrigem = request.input("urlOrigem");
-        tarefa.urlFinal = request.input("urlFinal");
+        tarefa.urlOrigem = imagemAbertura;
+        tarefa.urlFinal = imagemConclusao;
 
         await tarefa.save();
 
