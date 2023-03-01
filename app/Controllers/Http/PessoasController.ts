@@ -8,14 +8,15 @@ export default class PessoasController {
       id: 0,
       name: "",
       email: "",
-      telefone: "",
-      cargo: 0,
-      ativo: 0,
+      telefone: "62 ",
+      cargo: 3,
+      ativo: 1,
+      desligado: 0,
       password: "",
     };
 
     const page = request.input("page", 1);
-    const limit = 2;
+    const limit = 10;
 
     const pessoas = await Pessoa.query()
       .orderBy("name", "asc")
@@ -30,7 +31,7 @@ export default class PessoasController {
     const objPessoa = await Pessoa.findOrFail(params.id);
 
     const page = request.input("page", 1);
-    const limit = 2;
+    const limit = 10;
 
     const pessoas = await Pessoa.query()
       .orderBy("name", "asc")
@@ -57,6 +58,7 @@ export default class PessoasController {
           telefone: schema.string(),
           cargo: schema.string(),
           password: schema.string({ trim: true }, [rules.confirmed()]),
+
         });
 
         const validateData = await request.validate({
@@ -79,6 +81,7 @@ export default class PessoasController {
           cargo: Number(validateData.cargo),
           ativo: !!request.input("ativo"),
           password: validateData.password,
+          desligado: (request.input("desligado") === null ? 0 : request.input("desligado")),
         });
         session.flash("notification", "Pessoa adicionado com sucesso!");
       } else {
@@ -90,6 +93,7 @@ export default class PessoasController {
         pessoa.cargo = request.input("cargo");
         pessoa.ativo = !!request.input("ativo");
         pessoa.password = request.input("password");
+        pessoa.desligado = request.input("desligado");
         await pessoa.save();
         session.flash("notification", "Pessoa alterado com sucesso!");
       }
