@@ -1,10 +1,10 @@
-import Application from "@ioc:Adonis/Core/Application";
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import { schema } from "@ioc:Adonis/Core/Validator";
 import Empresa from "App/Models/Empresa";
 import Pessoa from "App/Models/Pessoa";
 import Tarefa from "App/Models/Tarefa";
 import { DateTime } from "luxon";
+import moment from "moment";
 
 export default class TarefaController {
   public async index({ view }: HttpContextContract) {
@@ -64,7 +64,7 @@ export default class TarefaController {
         empDestino: schema.number(),
         usuOrigem: schema.number(),
         usuDestino: schema.number(),
-        descricao: schema.string({ trim: true }) ,
+        descricao: schema.string({ trim: true }),
         dataOrigem: schema.date(),
         dataPrevisao: schema.date(),
         statusTarefa: schema.string({ trim: true }),
@@ -76,14 +76,22 @@ export default class TarefaController {
       let imagemConclusao: string = "";
       const fileAbertura = request.file("imagemAbertura");
       if (fileAbertura) {
-        imagemAbertura = fileAbertura.clientName;
-        await fileAbertura.move(Application.tmpPath("uploads"));
+        const nomeImagem = this.normalizaNomeImagem(fileAbertura.clientName);
+        imagemAbertura = `/assets/img_tarefas/${nomeImagem}`;
+        await fileAbertura.move("public/assets/img_tarefas", {
+          name: nomeImagem,
+          overwrite: true,
+        });
       }
 
       const fileConclusao = request.file("imagemConclusao");
       if (fileConclusao) {
-        imagemConclusao = fileConclusao.clientName;
-        await fileConclusao.move(Application.tmpPath("uploads"));
+        const nomeImagem = this.normalizaNomeImagem(fileConclusao.clientName);
+        imagemConclusao = `/assets/img_tarefas/${nomeImagem}`;
+        await fileConclusao.move("public/assets/img_tarefas", {
+          name: nomeImagem,
+          overwrite: true,
+        });
       }
 
       if (request.input("id") === "0") {
@@ -97,7 +105,7 @@ export default class TarefaController {
           empDestino: validateData.empDestino,
           usuOrigem: validateData.usuOrigem,
           usuDestino: validateData.usuDestino,
-          descricao:  (validateData.descricao),
+          descricao: validateData.descricao,
           dataOrigem: this.convertStrToDateTime(
             request.input("dataOrigem"),
             request.input("horaOrigem")
@@ -179,5 +187,13 @@ export default class TarefaController {
     );
 
     return dataLuxon;
+  }
+
+  public normalizaNomeImagem(value: string): string {
+    return (
+      moment().format("DDMMYYYYHHmmss") +
+      "_" +
+      value.normalize("NFD").split(" ").join("")
+    );
   }
 }

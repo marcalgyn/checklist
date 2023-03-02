@@ -36,7 +36,7 @@
               Ativar
             </th>
 
-         </tr>
+          </tr>
         </thead>
         <tbody>
           @each(pessoa in addPessoas)
@@ -48,26 +48,26 @@
               {{{ formatDateTime(pessoa.createdAt) }}}
             </td>
 
-             <form action="{{ `/pessoas/${pessoa.id}?_method=PATCH` }}" method="post">
-                {{ csrfField() }}
-                <td>
-                    <div class="select is-expanded">
-                      <select id="cargo" name="cargo" required>
-                        <option value="0" {{ pessoa.cargo===0 ? 'selected' : '' }}> Cargo </option>
-                        <option value="1" {{ pessoa.cargo===1 ? 'selected' : '' }}> Diretor </option>
-                        <option value="2" {{ pessoa.cargo===2 ? 'selected' : '' }}> Gerente </option>
-                        <option value="3" {{ pessoa.cargo===3 ? 'selected' : '' }}> Encarregado </option>
-                      </select>
-                    </div>
-                </td>
+            <form action="{{ `/pessoas/${pessoa.id}?_method=PATCH` }}" method="post">
+              {{ csrfField() }}
+              <td>
+                <div class="select is-expanded">
+                  <select id="cargo" name="cargo" required>
+                    <option value="0" {{ pessoa.cargo===0 ? 'selected' : '' }}> Cargo </option>
+                    <option value="1" {{ pessoa.cargo===1 ? 'selected' : '' }}> Diretor </option>
+                    <option value="2" {{ pessoa.cargo===2 ? 'selected' : '' }}> Gerente </option>
+                    <option value="3" {{ pessoa.cargo===3 ? 'selected' : '' }}> Encarregado </option>
+                  </select>
+                </div>
+              </td>
 
-                <td class="has-text-centered">
-                  <label for="completed" class="checkbox">
-                    <input type="checkbox" name="activated" onchange="this.form.submit()" {{ pessoa.ativo ? 'checked' : ''
-                      }}>
-                  </label>
-                </td>
-              </form>
+              <td class="has-text-centered">
+                <label for="completed" class="checkbox">
+                  <input type="checkbox" name="activated" onchange="this.form.submit()" {{ pessoa.ativo ? 'checked' : ''
+                    }}>
+                </label>
+              </td>
+            </form>
 
           </tr>
           @endeach
@@ -110,22 +110,23 @@
                 </div>
               </div>
 
-              <div class="fiel">
+              <div class="field">
                 <label class="label is-size-7">Data Registro</label>
                 <div class="control is-expanded">
-                  <input type="date" name="dataOrigem" class="input" placeholder="Digite a Data de Registro">
+                  <input type="date" name="dataOrigem" class="input is-size-7" placeholder="Digite a Data de Registro">
                 </div>
               </div>
               <div class="field">
                 <label class="label is-size-7">Data Conclusão</label>
                 <div class="control is-expanded">
-                  <input type="date" name="dataConclusao" class="input" placeholder="Digite a Data de Conclusão">
+                  <input type="date" name="dataConclusao" class="input is-size-7"
+                    placeholder="Digite a Data de Conclusão">
                 </div>
               </div>
               <div class="field">
                 <label class="label is-size-7">Status</label>
                 <div class="select is-fullwidth">
-                  <select name="usuDestino" required>
+                  <select class="is-size-7" name="usuDestino" required>
                     <option value="">Status</option>
                     <option value="Novo">Novo</option>
                     <option value="Completo">Completo</option>
@@ -209,26 +210,23 @@
 
               <td class="has-text-centered">
 
-              <div class="control ml-5">
+                <div class="control ml-5">
 
-                @if (tarefa.prioridade === 1)
-                    <span style="font-weight: bold; color: red">A</span>
-                @endif
+                  @if (tarefa.prioridade === 1)
+                  <span style="font-weight: bold; color: red">A</span>
+                  @endif
 
-                @if(tarefa.prioridade===2 )
-                    <span style="font-weight: bold; color: orange" >M</span>
-                @endif
+                  @if(tarefa.prioridade===2 )
+                  <span style="font-weight: bold; color: orange">M</span>
+                  @endif
 
-                @if(tarefa.prioridade===3)
-                    <span style="font-weight: bold; color: green">B</span>
-                @endif
+                  @if(tarefa.prioridade===3)
+                  <span style="font-weight: bold; color: green">B</span>
+                  @endif
 
-              </div>
+                </div>
 
               </td>
-
-
-
 
               <td class="has-text-centered is-hidden-mobile">
                 {{{ formatDate(tarefa.dataConclusao) }}}
@@ -274,7 +272,7 @@
             </tr>
             @else
             <tr>
-              <td colspan="5" class="has-text-centered">Nenhum Registro Encontrado com os Dados Informados</td>
+              <td colspan="7" class="has-text-centered">Nenhum Registro Encontrado com os Dados Informados</td>
             </tr>
             @endeach
           </tbody>

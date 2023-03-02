@@ -98,7 +98,7 @@
                       </label>
                     </div>
                     <figure class="image mt-2" style="width: 256px;">
-                      <img id="output">
+                      <img id="output" src={{objTarefa.urlOrigem}}>
                     </figure>
                   </div>
                   <div class="field">
@@ -116,7 +116,7 @@
                       </label>
                     </div>
                     <figure class="image mt-2" style="width: 256px;">
-                      <img id="output2">
+                      <img id="output2" src={{objTarefa.urlFinal}}>
                     </figure>
                   </div>
                 </div>
@@ -264,20 +264,6 @@
     }
   }
   /***** Fim do Script de conclusão da tarefa *************************/
-
-  window.onload = function loadDate() {
-    let date = new Date(),
-      day = date.getDate(),
-      month = date.getMonth() + 1,
-      year = date.getFullYear();
-
-    if (month < 10) month = "0" + month;
-    if (day < 10) day = "0" + day;
-
-    const todayDate = `${year}-${month}-${day}`;
-
-    document.getElementById("dateRegistro").defaultValue = todayDate;
-  };
 
 </script>
 @endsection
