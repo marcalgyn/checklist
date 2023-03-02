@@ -1,8 +1,8 @@
 @layout('layouts/app')
 
-@section('content')
-<div class="columns">
-  <div class="column is-full">
+@section('content' )
+<div class="columns" >
+  <div class="column is-full margin-top: "80px">
     @if(flashMessages.has('notificationActivate'))
     <div class="notification is-success is-light">
       <button class="delete"></button>
@@ -22,7 +22,6 @@
             <th>
               Nome
             </th>
-
 
             <th class="has-text-centered is-hidden-mobile">
               Data Cadastro

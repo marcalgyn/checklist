@@ -1,16 +1,16 @@
 @layout('layouts/app')
 
 @section('content')
-<div class="columns">
+<div class="columns is-size-7">
   <div class="column is-fullwidth">
     <div class="box">
       <form action="/pessoas" method="post">
         {{ csrfField() }}
         <input type="hidden" name="id" id="id" value={{ objPessoa.id }}>
 
-        <div class="card">
+        <div class="card ">
           <header class="card-header has-background-link">
-            <p class="title is-4 p-3 has-text-white">
+            <p class="title is-7 p-3 has-text-white">
               Cadastro de Pessoa
             </p>
           </header>
