@@ -2,6 +2,7 @@ import Route from "@ioc:Adonis/Core/Route";
 
 Route.get("/", "HomeController.index").middleware("auth");
 Route.get("/home", "HomeController.index").middleware("auth");
+Route.post("/home/filter", "HomeController.filter").middleware("auth");
 Route.get("/welcome", "HomeController.welcome").middleware("guest");
 
 Route.group(() => {

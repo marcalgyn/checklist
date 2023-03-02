@@ -1,8 +1,8 @@
 @layout('layouts/app')
 
 @section('content' )
-<div class="columns" >
-  <div class="column is-full margin-top: "80px">
+<div class="columns">
+  <div class="column is-full margin-top: 80px">
     @if(flashMessages.has('notificationActivate'))
     <div class="notification is-success is-light">
       <button class="delete"></button>
@@ -75,7 +75,7 @@
     </div>
     @endif
     <div class="box is-size-7 p-5">
-      <form action="/tarefas/findBy" method="post">
+      <form action="/home/filter" method="post">
         {{ csrfField() }}
 
         <div class="card has-background-light is-7">
@@ -89,7 +89,7 @@
               <div class="field">
                 <label class="label is-size-7">Empresa</label>
                 <div class="select is-fullwidth">
-                  <select name="empDestino" required>
+                  <select name="empDestino">
                     <option value="">Selecione uma Empresa</option>
                     @each(empresa in empresas)
                     <option value="{{ empresa.id }}">{{ empresa.razaoSocial }}</option>
@@ -100,7 +100,7 @@
               <div class="field">
                 <label class="label is-size-7">Responsável</label>
                 <div class="select is-fullwidth">
-                  <select name="usuDestino" required>
+                  <select name="usuDestino">
                     <option value="">Selecione um Responsável</option>
                     @each(pessoa in pessoas)
                     <option value="{{ pessoa.id }}">{{ pessoa.name }}</option>
@@ -112,20 +112,19 @@
               <div class="field">
                 <label class="label is-size-7">Data Registro</label>
                 <div class="control is-expanded">
-                  <input type="date" name="dataOrigem" class="input is-size-7" placeholder="Digite a Data de Registro">
+                  <input type="date" name="dataOrigem" class="input is-size-7">
                 </div>
               </div>
               <div class="field">
                 <label class="label is-size-7">Data Conclusão</label>
                 <div class="control is-expanded">
-                  <input type="date" name="dataConclusao" class="input is-size-7"
-                    placeholder="Digite a Data de Conclusão">
+                  <input type="date" name="dataConclusao" class="input is-size-7">
                 </div>
               </div>
               <div class="field">
                 <label class="label is-size-7">Status</label>
                 <div class="select is-fullwidth">
-                  <select class="is-size-7" name="usuDestino" required>
+                  <select class="is-size-7" name="statusTarefa">
                     <option value="">Status</option>
                     <option value="Novo">Novo</option>
                     <option value="Completo">Completo</option>

@@ -150,8 +150,12 @@ export default class TarefaController {
               )
             : null;
         tarefa.statusTarefa = request.input("statusTarefa");
-        tarefa.urlOrigem = imagemAbertura;
-        tarefa.urlFinal = imagemConclusao;
+        if (imagemAbertura !== "") {
+          tarefa.urlOrigem = imagemAbertura;
+        }
+        if (imagemConclusao !== "") {
+          tarefa.urlFinal = imagemConclusao;
+        }
 
         await tarefa.save();
 
