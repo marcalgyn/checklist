@@ -55,91 +55,39 @@ export default class HomeController {
     const dataConclusao = request.input("dataConclusao");
     const statusTarefa = request.input("statusTarefa");
 
-    console.log("empDestino", empDestino);
-    console.log("usuDestino", usuDestino);
-    console.log("dataOrigem", dataOrigem + " 00:00:00");
-    console.log("dataConclusao", dataConclusao + " 23:59:59");
-    console.log("statusTarefa", statusTarefa);
-
-    let tarefas: any;
-    if (empDestino !== null) {
-      tarefas = await Tarefa.query()
-        .join("empresas", "empresas.id", "=", "tarefas.emp_destino")
-        .join("pessoas", "pessoas.id", "=", "tarefas.usu_destino")
-        .where("empDestino", empDestino)
-        .select("tarefas.*")
-        .select("empresas.razao_social")
-        .select("pessoas.name")
-        .orderBy("dataConclusao", "asc")
-        .orderBy("prioridade", "asc")
-        .orderBy("dataPrevisao", "asc")
-        .paginate(page, limit);
-    } else if (usuDestino !== null) {
-      tarefas = await Tarefa.query()
-        .join("empresas", "empresas.id", "=", "tarefas.emp_destino")
-        .join("pessoas", "pessoas.id", "=", "tarefas.usu_destino")
-        .where("usuDestino", usuDestino)
-        .select("tarefas.*")
-        .select("empresas.razao_social")
-        .select("pessoas.name")
-        .orderBy("dataConclusao", "asc")
-        .orderBy("prioridade", "asc")
-        .orderBy("dataPrevisao", "asc")
-        .paginate(page, limit);
-    } else if (dataOrigem !== null) {
-      tarefas = await Tarefa.query()
-        .join("empresas", "empresas.id", "=", "tarefas.emp_destino")
-        .join("pessoas", "pessoas.id", "=", "tarefas.usu_destino")
-        .whereBetween("dataOrigem", [
-          dataOrigem + " 00:00:00",
-          dataOrigem + " 23:59:59",
-        ])
-        .select("tarefas.*")
-        .select("empresas.razao_social")
-        .select("pessoas.name")
-        .orderBy("dataConclusao", "asc")
-        .orderBy("prioridade", "asc")
-        .orderBy("dataPrevisao", "asc")
-        .paginate(page, limit);
-    } else if (dataConclusao !== null) {
-      tarefas = await Tarefa.query()
-        .join("empresas", "empresas.id", "=", "tarefas.emp_destino")
-        .join("pessoas", "pessoas.id", "=", "tarefas.usu_destino")
-        .whereBetween("dataConclusao", [
-          dataConclusao + " 00:00:00",
-          dataConclusao + " 23:59:59",
-        ])
-        .select("tarefas.*")
-        .select("empresas.razao_social")
-        .select("pessoas.name")
-        .orderBy("dataConclusao", "asc")
-        .orderBy("prioridade", "asc")
-        .orderBy("dataPrevisao", "asc")
-        .paginate(page, limit);
-    } else if (statusTarefa !== null) {
-      tarefas = await Tarefa.query()
-        .join("empresas", "empresas.id", "=", "tarefas.emp_destino")
-        .join("pessoas", "pessoas.id", "=", "tarefas.usu_destino")
-        .where("statusTarefa", statusTarefa)
-        .select("tarefas.*")
-        .select("empresas.razao_social")
-        .select("pessoas.name")
-        .orderBy("dataConclusao", "asc")
-        .orderBy("prioridade", "asc")
-        .orderBy("dataPrevisao", "asc")
-        .paginate(page, limit);
-    } else {
-      tarefas = await Tarefa.query()
-        .join("empresas", "empresas.id", "=", "tarefas.emp_destino")
-        .join("pessoas", "pessoas.id", "=", "tarefas.usu_destino")
-        .select("tarefas.*")
-        .select("empresas.razao_social")
-        .select("pessoas.name")
-        .orderBy("dataConclusao", "asc")
-        .orderBy("prioridade", "asc")
-        .orderBy("dataPrevisao", "asc")
-        .paginate(page, limit);
-    }
+    const tarefas = await Tarefa.query()
+      .join("empresas", "empresas.id", "=", "tarefas.emp_destino")
+      .join("pessoas", "pessoas.id", "=", "tarefas.usu_destino")
+      .where((query) => {
+        if (empDestino !== null) {
+          query.andWhere("empDestino", empDestino);
+        }
+        if (usuDestino !== null) {
+          query.andWhere("usuDestino", usuDestino);
+        }
+        if (dataOrigem !== null) {
+          query.andWhereBetween("dataOrigem", [
+            dataOrigem + " 00:00:00",
+            dataOrigem + " 23:59:59",
+          ]);
+        }
+        if (dataConclusao !== null) {
+          query.andWhereBetween("dataConclusao", [
+            dataConclusao + " 00:00:00",
+            dataConclusao + " 23:59:59",
+          ]);
+        }
+        if (statusTarefa !== null) {
+          query.andWhere("statusTarefa", statusTarefa);
+        }
+      })
+      .select("tarefas.*")
+      .select("empresas.razao_social")
+      .select("pessoas.name")
+      .orderBy("dataConclusao", "asc")
+      .orderBy("prioridade", "asc")
+      .orderBy("dataPrevisao", "asc")
+      .paginate(page, limit);
 
     const addPessoas = await Pessoa.query()
       .where({ ativo: false, desligado: false })
