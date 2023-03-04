@@ -51,8 +51,8 @@ export default class HomeController {
 
     const empDestino = request.input("empDestino");
     const usuDestino = request.input("usuDestino");
-    const dataOrigem = request.input("dataOrigem");
-    const dataConclusao = request.input("dataConclusao");
+    const dataInicial = request.input("dataInicial");
+    const dataFinal = request.input("dataFinal");
     const statusTarefa = request.input("statusTarefa");
 
     const tarefas = await Tarefa.query()
@@ -65,17 +65,11 @@ export default class HomeController {
         if (usuDestino !== null) {
           query.andWhere("usuDestino", usuDestino);
         }
-        if (dataOrigem !== null) {
+        if (dataInicial !== null && dataFinal !== null) {
           query.andWhereBetween("dataOrigem", [
-            dataOrigem + " 00:00:00",
-            dataOrigem + " 23:59:59",
-          ]);
-        }
-        if (dataConclusao !== null) {
-          query.andWhereBetween("dataConclusao", [
-            dataConclusao + " 00:00:00",
-            dataConclusao + " 23:59:59",
-          ]);
+            dataInicial + " 00:00:00",
+            dataFinal + " 23:59:59",
+          ] );
         }
         if (statusTarefa !== null) {
           query.andWhere("statusTarefa", statusTarefa);

@@ -74,7 +74,7 @@
       </table>
     </div>
     @endif
-    <div class="box is-size-7 p-5">
+    <div class="box is-size-7 p-0">
       <form action="/home/filter" method="post">
         {{ csrfField() }}
 
@@ -110,15 +110,15 @@
               </div>
 
               <div class="field">
-                <label class="label is-size-7">Data Registro</label>
+                <label class="label is-size-7">Data Inicial</label>
                 <div class="control is-expanded">
-                  <input type="date" name="dataOrigem" class="input is-size-7">
+                  <input type="date" name="dataInicial" class="input is-size-7">
                 </div>
               </div>
               <div class="field">
-                <label class="label is-size-7">Data Conclusão</label>
+                <label class="label is-size-7">Data Final</label>
                 <div class="control is-expanded">
-                  <input type="date" name="dataConclusao" class="input is-size-7">
+                  <input type="date" name="dataFinal" class="input is-size-7">
                 </div>
               </div>
               <div class="field">
@@ -183,7 +183,7 @@
 
 
               <th class="has-text-centered is-hidden-mobile">
-                Data Conclusão
+                Data Origem
               </th>
               <th class="has-text-centered">
                 Ações
@@ -227,7 +227,7 @@
               </td>
 
               <td class="has-text-centered is-hidden-mobile">
-                {{{ formatDate(tarefa.dataConclusao) }}}
+                {{{ formatDate(tarefa.dataOrigem) }}}
               </td>
               <td class="has-text-centered">
                 <div class="buttons">

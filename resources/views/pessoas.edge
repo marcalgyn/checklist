@@ -1,9 +1,9 @@
 @layout('layouts/app')
 
 @section('content')
-<div class="columns is-size-7">
+<div class="columns is-size-7" is-size-7>
   <div class="column is-fullwidth">
-    <div class="box">
+    <div class="box p-0" >
       <form action="/pessoas" method="post">
         {{ csrfField() }}
         <input type="hidden" name="id" id="id" value={{ objPessoa.id }}>
