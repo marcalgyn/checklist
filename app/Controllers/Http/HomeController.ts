@@ -3,6 +3,7 @@ import Empresa from "App/Models/Empresa";
 import Pessoa from "App/Models/Pessoa";
 import Tarefa from "App/Models/Tarefa";
 
+
 export default class HomeController {
   public async index({ request, view }: HttpContextContract) {
     const empresas = await Empresa.all();
@@ -17,9 +18,13 @@ export default class HomeController {
     const tarefas = await Tarefa.query()
       .join("empresas", "empresas.id", "=", "tarefas.emp_destino")
       .join("pessoas", "pessoas.id", "=", "tarefas.usu_destino")
+      .join("departamentos", "departamentos.id", "=", "tarefas.dep_destino")
       .select("tarefas.*")
       .select("empresas.razao_social")
       .select("pessoas.name")
+      .select("departamentos.nome")
+      .whereNot("status_tarefa", "Completo" )
+      .andWhereNot("status_tarefa", "Cancelado" )
       .orderBy("dataConclusao", "asc")
       .orderBy("prioridade", "asc")
       .orderBy("dataPrevisao", "asc")

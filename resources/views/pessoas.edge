@@ -137,7 +137,7 @@
             @each(pessoa in pessoas)
             <tr>
               <td class="is-hidden-mobile">{{ pessoa.id }}</td>
-              <td>{{ pessoa.name }}</td>
+              <td class="is-uppercase">{{ pessoa.name }}</td>
               <td class="has-text-centered is-hidden-mobile">{{ pessoa.telefone !== null ? pessoa.telefone : '' }}</td>
               <td class="has-text-centered is-hidden-mobile">{{ pessoa.cargo === 1 ? 'Diretor' : pessoa.cargo === 2 ? 'Gerente' :
                 'Encarregado'}}</td>

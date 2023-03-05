@@ -59,6 +59,7 @@ export default class PessoasController {
           cargo: schema.string(),
           password: schema.string({ trim: true }, [rules.confirmed()]),
 
+
         });
 
         const validateData = await request.validate({
@@ -74,6 +75,7 @@ export default class PessoasController {
 
         console.log("Validate Pessoa", validateData);
 
+
         await Pessoa.create({
           name: validateData.name,
           email: validateData.email,
@@ -82,6 +84,7 @@ export default class PessoasController {
           ativo: !!request.input("ativo"),
           password: validateData.password,
           desligado: (request.input("desligado") === null ? 0 : request.input("desligado")),
+
         });
         session.flash("notification", "Pessoa adicionado com sucesso!");
       } else {

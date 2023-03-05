@@ -30,10 +30,20 @@ Route.group(() => {
   Route.get("/:id", "TarefaController.edit");
   Route.post("/", "TarefaController.create");
   Route.patch("/:id", "TarefaController.finalize");
-  Route.delete("/:id", "TarefaController.delete");
+  Route.post("/:id", "TarefaController.cancela");
 })
   .prefix("/tarefas")
   .middleware("auth");
+
+  Route.group(() => {
+    Route.get("/", "DepartamentosController.index");
+    Route.get("/:id", "DepartamentosController.edit");
+    Route.post("/", "DepartamentosController.create");
+    Route.patch("/:id", "DepartamentosController.finalize");
+    Route.delete("/:id", "DepartamentosController.delete");
+  })
+    .prefix("/departamentos")
+    .middleware("auth");
 
 Route.get("/register", "AuthController.showRegister").middleware("guest");
 Route.post("/register", "AuthController.register");
