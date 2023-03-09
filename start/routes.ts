@@ -45,6 +45,18 @@ Route.group(() => {
     .prefix("/departamentos")
     .middleware("auth");
 
+    Route.group(() => {
+      Route.get("/", "PatrimoniosController.index");
+      Route.get("/:id", "PatrimoniosController.edit");
+      Route.post("/", "PatrimoniosController.create");
+      Route.patch("/:id", "PatrimoniosController.finalize");
+      Route.delete("/:id", "PatrimoniosController.delete");
+    })
+      .prefix("/patrimonios")
+      .middleware("auth");
+
+
+
 Route.get("/register", "AuthController.showRegister").middleware("guest");
 Route.post("/register", "AuthController.register");
 Route.post("/logout", "AuthController.logout");
